@@ -1,0 +1,39 @@
+(8:13:04 AM) niknam: lottie-react-native
+(8:13:27 AM) niknam: react-native-snap-carousel
+(8:14:07 AM) niknam: rn-sliding-up-panel
+(8:14:16 AM) niknam: rn-range-slider
+(8:14:28 AM) niknam: react-native-tab-view
+(8:14:40 AM) niknam: react-native-render-html
+(8:14:57 AM) niknam: react-native-share
+(8:15:10 AM) niknam: react-native-share
+(8:15:16 AM) niknam: react-native-modal
+(8:15:30 AM) niknam: react-native-linear-gradient
+(8:15:37 AM) niknam: react-native-image-zoom-viewer
+(8:15:53 AM) niknam: react-native-flash-message
+(8:16:17 AM) niknam: @ui-kitten/components
+(8:16:46 AM) niknam: reactotron-react-native
+
+‏‪(8:17:29 AM)‬‏‬ ‪niknam‬‏‬: ‫این آخری برای نمایش لاگ هست 
+‏‪(8:17:51 AM)‬‏‬ ‪niknam‬‏‬: ‫به جای console.log از reactotron.log استفاده می کنی
+‏‪(8:18:22 AM)‬‏‬ ‪niknam‬‏‬: ‫اون console.log خطا رو خیلی کثیف نشون میده 
+‏‪(8:18:43 AM)‬‏‬ ‪niknam‬‏‬: ‫این reactotron نرم افزار ویندوزی خودش رو داره نصبش می کنی
+‏‪(8:19:20 AM)‬‏‬ ‪niknam‬‏‬: ‫بعد زمانی که device ت اومد بالا این دستور رو میزنی adb reverse tcp:9090 tcp:9090
+‏‪(8:19:43 AM)‬‏‬ ‪niknam‬‏‬: ‫بعد که لاگ بذاری قشنگ تو اون نرم افزارش نشون میده
+‏‪(8:20:35 AM)‬‏‬ ‪niknam‬‏‬: ‫مثلا اپ شما یه سری api ها رو فراخونی می کنی این پیش فرض نمایش میده ارسال اون api  و دیتای برگشتی رو
+‏‪(8:20:59 AM)‬‏‬ ‪niknam‬‏‬: ‫در کل از محیط پیش فرض خود ریکت نیتیو خیلی بهتره
+‏‪(8:33:51 AM)‬‏‬ ‪niknam‬‏‬: ‫هر جا به خطاهایی خوردی که با عقل جور در نمیاد باید بری تو پوشه android پروژه 
+‏‪(8:34:04 AM)‬‏‬ ‪niknam‬‏‬: ‫اون دستور رو بزنی gradlew clean
+‏‪(8:34:40 AM)‬‏‬ ‪niknam‬‏‬: ‫این دستور برای خطاهایی که با عقل جور در نمیاد:D
+‏‪(8:38:04 AM)‬‏‬ ‪marian@desktop-3p7aikt/8pswh8ceuv‬‏‬: ‫واسه reacttron همون فایل exe شو بگیرم درسته یا چیز دیگه هم لازم داره ؟
+‏‪(8:38:14 AM)‬‏‬ ‪niknam‬‏‬: ‫بعد باز اگه به خطایی خوردی که دیگه هر چی سرچ زدی  پیدا نشد با عقلم جور در نمیومد و gradlew clean  هم زدی فایده ای نداشت و داشتی دیوونه میشدی در حدی که سیستم رو از پنجره اتاق پرت کنی بیرون تو شاخه درایو c این مسیر users-> current user -> .gradle پوشه caches رو باید پاک کنی
+‏‪(8:38:58 AM)‬‏‬ ‪marian@desktop-3p7aikt/8pswh8ceuv‬‏‬: ‫نه بابا تو این شرایط خودمو از پنجره پرت میکنم ولی سیستم رو نمیدازم 
+‏‪(8:39:07 AM)‬‏‬ ‪niknam‬‏‬: ‫ولی همونطوری پاک نمیشه باید بری داخل taskmanager این دو فایل رو endprocess بزنی
+adb.exe, java.exe
+‏‪(8:39:14 AM)‬‏‬ ‪niknam‬‏‬: ‫بعد پوشه پاک میشه
+
+
+if (__DEV__) {
+  import('./src/reactotron-config').then(() =>
+    console.log('Reactotron Configured'),
+  );
+}
