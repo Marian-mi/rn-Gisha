@@ -1,11 +1,13 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 
 
-const Home = () => {
+const Home = ({ navigation }) => {
     return (
         <View>
-            <Text>This is home</Text>
+            <Pressable onPress={() => navigation.navigate('ProductGroup')}>
+                <Text>This is home</Text>
+            </Pressable>
         </View>
     )
 }
