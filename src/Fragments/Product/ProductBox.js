@@ -33,8 +33,8 @@ const ProductBoxStyle = StyleSheet.create({
         maxHeight: 60,
     },
     Price: {
-        alignSelf: 'flex-start',
-        marginLeft: 20,
+        alignSelf: 'flex-end',
+        marginEnd: 20,
         paddingVertical: 10
     }
 })

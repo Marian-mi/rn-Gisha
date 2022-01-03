@@ -3,9 +3,10 @@ import React from 'react';
 
 export const Products = {
     isFetching: true,
-    products: []
+    products: [],
+    setProducts: () => {},
 }
 
 const ProductContext = React.createContext(Products)
 
-export default ProductContext
+export default ProductContext 
