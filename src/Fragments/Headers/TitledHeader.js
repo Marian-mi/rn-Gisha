@@ -1,25 +1,27 @@
 import React, { useState } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Pressable, StyleSheet } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { TextStyles } from '../../Styles/Index'
 
 
-const TitledHeader = ({ navigation, title}) => {
+const TitledHeader = ({ navigation, title }) => {
     return (
         <View style={TitledHeaderStyles.Container}>
             <View style={{ ...TitledHeaderStyles.Wrappers, flex: 7 }}>
-                <Pressable 
-                    style={{ flex: 2, ...FlexStyles.Centered }} 
+                <Pressable
+                    style={{ flex: 1, ...FlexStyles.Centered }}
                     android_ripple={{ color: 'white' }}
                     onPress={() => navigation.goBack()}
                 >
                     <Icon name='arrow-right' size={24} color={'white'} style={{ flex: 1, textAlignVertical: 'center' }} />
                 </Pressable>
-                <Pressable>
-                    <Text>{ title }</Text>
+                <Pressable style={TitledHeaderStyles.Title}>
+                    <Text style={ TextStyles.Title1 }>{title}</Text>
                 </Pressable>
             </View>
 
             <View style={{ flex: 2 }}></View>
-            
+
             <View style={{ ...TitledHeaderStyles.Wrappers, flex: 3, }}>
                 <Icon name='magnify' size={24} color={'red'} style={{ flex: 1, ...TitledHeaderStyles.Icons }} />
                 <Icon name='cart' size={24} color={'red'} style={{ flex: 1, ...TitledHeaderStyles.Icons }} />
@@ -41,6 +43,7 @@ const TitledHeaderStyles = StyleSheet.create({
         backgroundColor: '#de1f26',
         position: 'absolute',
         top: 0,
+        zIndex: 1
     },
     Wrappers: {
         flex: 1,
@@ -51,6 +54,12 @@ const TitledHeaderStyles = StyleSheet.create({
         textAlign: 'center',
         textAlignVertical: 'center',
         color: 'white',
+    },
+    Title: {
+        flex: 4,
+        justifyContent: 'center',
+        height: 40,
+        paddingStart: 10
     }
 })
 

@@ -18,7 +18,9 @@ const MainHeader = ({ navigation }) => {
             <View style={{ flex: 4 }}></View>
             
             <View style={{ ...HomeHeaderStyles.Wrappers, flex: 3, }}>
-                <Icon name='magnify' size={24} color={'red'} style={{ flex: 1, ...HomeHeaderStyles.Icons }} />
+                <Pressable onPress={() => navigation.navigate("ProductCategory")}>
+                    <Icon name='magnify' size={24} color={'red'} style={{ flex: 1, ...HomeHeaderStyles.Icons }} />
+                </Pressable>
                 <Icon name='cart' size={24} color={'red'} style={{ flex: 1, ...HomeHeaderStyles.Icons }} />
             </View>
         </View>
@@ -38,6 +40,7 @@ const HomeHeaderStyles = StyleSheet.create({
         backgroundColor: '#de1f26',
         position: 'absolute',
         top: 0,
+        zIndex: 1,
     },
     Wrappers: {
         flex: 1,
