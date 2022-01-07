@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
 
-export const colors = {
-    Primary: '#de1f26'
+export const Colors = {
+    Primary: '#de1f26',
+    Grey: "#747474"
 }
 
 export const TextStyles = StyleSheet.create({
@@ -9,5 +10,17 @@ export const TextStyles = StyleSheet.create({
         color: 'white',
         fontWeight: "700",
         fontSize: 16,
+    }
+})
+
+export const Flex = StyleSheet.create({
+    Row: {
+        display: 'flex',
+        flexDirection: 'row'
+    },
+    Centered: {
+        display: "flex",
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

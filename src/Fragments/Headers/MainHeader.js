@@ -7,7 +7,11 @@ const MainHeader = ({ navigation }) => {
     return (
         <View style={HomeHeaderStyles.Home__header}>
             <View style={{ ...HomeHeaderStyles.Wrappers, flex: 7 }}>
-                <Pressable style={{ flex: 2, ...FlexStyles.Centered }} android_ripple={{ color: 'white' }}>
+                <Pressable 
+                    style={{ flex: 2, ...FlexStyles.Centered }} 
+                    android_ripple={{ color: 'white' }}
+                    onPress={() => navigation.openDrawer()}
+                >
                     <Icon name='menu' size={24} color={'white'} style={{ flex: 1, textAlignVertical: 'center' }} />
                 </Pressable>
                 <Pressable onPress={() => navigation.navigate("Home")}>
@@ -18,7 +22,7 @@ const MainHeader = ({ navigation }) => {
             <View style={{ flex: 4 }}></View>
             
             <View style={{ ...HomeHeaderStyles.Wrappers, flex: 3, }}>
-                <Pressable onPress={() => navigation.navigate("ProductCategory")}>
+                <Pressable onPress={() => navigation.navigate("Search")}>
                     <Icon name='magnify' size={24} color={'red'} style={{ flex: 1, ...HomeHeaderStyles.Icons }} />
                 </Pressable>
                 <Icon name='cart' size={24} color={'red'} style={{ flex: 1, ...HomeHeaderStyles.Icons }} />

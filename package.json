@@ -10,11 +10,14 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
     "react": "17.0.2",
     "react-native": "0.66.4",
+    "react-native-gesture-handler": "^2.1.0",
     "react-native-pager-view": "^5.4.9",
+    "react-native-reanimated": "^2.3.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.1",
     "react-native-tab-view": "^3.1.1",
@@ -39,6 +42,7 @@
     "singleQuote": true,
     "trailingComma": "all",
     "arrowParens": "avoid",
-    "tabWidth": 4
+    "tabWidth": 4,
+    "printWidth": 50
   }
 }
