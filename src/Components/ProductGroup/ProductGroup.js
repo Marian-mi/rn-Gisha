@@ -25,12 +25,14 @@ const ProductGroup = ({ navigation }) => {
             <FlatList
                 data={productContext.products}
                 horizontal
+                contentContainerStyle={{ display: "flex"}}
                 renderItem={
                     ({ item }) =>
                         <ProductBox
                             ImageSrc={item.image}
                             Title={item.title}
                             Price={item.price}
+                            Width={170}
                         />
                 } 
             >

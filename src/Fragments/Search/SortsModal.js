@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react'
 import { View, Text, Modal, StyleSheet, Pressable } from 'react-native'
-import { FlatList, ScrollView } from 'react-native-gesture-handler'
 import SearchContext from '../../ContextProviders/SearchContext'
 import { Flex } from '../../Styles/Index'
 import RadioButton from '../Input/RadioButton'
@@ -50,6 +49,7 @@ const Sorts = () => {
                 <View style={Styles.List}>
                     {SortsData.map((item) => (
                         <RadioButton
+                            key={item.ID}
                             Title={item.Title}
                             Index={item.ID}
                             Selected={selectedSort === item.ID}

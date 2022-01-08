@@ -30,15 +30,15 @@ const NavigationStacks = () => {
                     }}
                 />
                 <Drawer.Screen
-                    name="ProductGroup"
-                    component={ScreenStack({ screen: ProductGroup, name: "ProductGroupStack" })}
+                    name="ProductCategory"
+                    component={ScreenStack({ screen: ProductCategory, name: "ProductCategoryStack" })}
                     options={{
                         ...DrawerCommonStyles,
                     }}
                 />
                 <Drawer.Screen
-                    name="ProductCategory"
-                    component={ScreenStack({ screen: ProductCategory, name: "ProductCategoryStack" })}
+                    name="ProductGroup"
+                    component={ScreenStack({ screen: ProductGroup, name: "ProductGroupStack" })}
                     options={{
                         ...DrawerCommonStyles,
                     }}
@@ -83,18 +83,18 @@ const CustomDrawerContent = (props) => {
         const { name } = route;
         const { Label, Icon, Hidden } = RoutesConfig[name];
 
-        if(Hidden)
+        if (Hidden)
             return null
 
         return (
-            <DrawerItem 
-                label={Label} 
+            <DrawerItem
+                label={Label ?? name}
                 onPress={() => props.navigation.navigate(name)}
-                icon={Icon}     
+                icon={Icon ?? (() => { })}
             />
         );
     })
-    
+
     return (
         <DrawerContentScrollView {...props}>
             <DrawerHeader />
@@ -113,7 +113,7 @@ const RoutesConfig = {
         Icon: () => <Icon name='format-list-bulleted' size={26} color="#5f5f5f" style={{ transform: [{ rotate: "180deg" }] }} />
     },
     "ProductGroup": {
-        Hidden: true,
+        Hidden: false,
     },
     "Search": {
         Hidden: true,
