@@ -1,9 +1,12 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Logo from '../../../assets/imgs/Logo.png'
 
-const MainHeader = ({ navigation }) => {
+const MainHeader = () => {
+    const navigation = useNavigation();
+
     return (
         <View style={HomeHeaderStyles.Home__header}>
             <View style={{ ...HomeHeaderStyles.Wrappers, flex: 7 }}>
