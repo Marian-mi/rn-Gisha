@@ -14,7 +14,6 @@ const Carousel = ({ autoplay, data, renderer }) => {
     const autoplayRef = useRef()
     const timerStarted = useRef(false)
     const sliderDirection = useRef("left")
-    const currentScrollY = useRef(0)
 
     const startAutoplay = () => {
         if (!timerStarted.current) {
@@ -84,7 +83,7 @@ const Indicator = ({ count, current }) => {
     let circles = []
     for (let i = 0; i < count; i++) {
         circles.push((
-            <View
+            <View key={i}
                 style={[Styles.Indicator, i === current ? Styles.IndicatorCurrent : null]}
             />
         ))

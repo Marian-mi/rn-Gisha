@@ -9,7 +9,6 @@ import { Colors } from './src/Styles/Index';
 //#region Pages
 import Home from './src/Components/Home/Home';
 import ProductCategory from './src/Components/ProductCategory/ProductCategory';
-import ProductGroup from './src/Components/ProductGroup/ProductGroup';
 import Search from './src/Components/Search/Search';
 import Test from './src/Components/Test/Test';
 import ProductPage from './src/Components/ProductPage/ProductPage';
@@ -44,7 +43,6 @@ const ScreenStack = () => {
         <Stack.Navigator>
             <Stack.Screen name="Home" component={Home} options={StackOptions} />
             <Stack.Screen name="ProductCategory" component={ProductCategory} options={StackOptions} />
-            <Stack.Screen name="ProductGroup" component={ProductGroup} options={StackOptions} />
             <Stack.Screen name="Search" component={Search} options={StackOptions} />
             <Stack.Screen name="ProductPage" component={ProductPage} options={StackOptions} />
         </Stack.Navigator>

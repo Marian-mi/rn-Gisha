@@ -2,7 +2,9 @@ import { StyleSheet } from "react-native";
 
 export const Colors = {
     Primary: '#de1f26',
-    Grey: "#a9a9a9"
+    Grey: "#a9a9a9",
+    Green: "#66bb6a",
+    Dark: "#656565",
 }
 
 export const TextStyles = StyleSheet.create({
