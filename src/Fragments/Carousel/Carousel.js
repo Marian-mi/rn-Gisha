@@ -5,7 +5,7 @@ import ProductContext from '../../ContextProviders/ProductContext'
 import MainHeader from '../../Fragments/Headers/MainHeader'
 
 
-const Carousel = ({ autoplay, data, renderer }) => {
+const Carousel = ({ autoplay, data, renderer, scrollDisabled }) => {
     const { width, height } = useWindowDimensions()
 
     const [sliderIndex, setSliderIndex] = useState(0)
@@ -23,40 +23,51 @@ const Carousel = ({ autoplay, data, renderer }) => {
     }
 
     const changeIndex = () => {
-        let nextIndex = sliderIndex;
+        if (sliderDirection.current === 'right')
+            setSliderIndex(ps => {
+                const nextVal = --ps
+                slide(nextVal)
+                return nextVal
+            });
+        else
+            setSliderIndex(ps => {
+                const nextVal = ++ps
+                slide(nextVal)
+                return nextVal
+            })
+    }
+
+    useEffect(() => {
         if (sliderIndex === data.length - 1 && sliderDirection.current === 'left')
             sliderDirection.current = "right"
         if (sliderIndex === 0 && sliderDirection.current === "right")
             sliderDirection.current = "left"
-
-        if (sliderDirection.current === 'right')
-            nextIndex--
-        else
-            nextIndex++
-
-        setSliderIndex(nextIndex);
-        slide()
-    }
+        
+    }, [sliderIndex])
 
     useEffect(() => {
-        autoplay && startAutoplay()
+        if (data?.length > 0) {
+            autoplay && startAutoplay()
 
-        return () => {
-            if (autoplayRef.current) {
-                clearInterval(autoplayRef.current)
-                timerStarted.current = false
+            return () => {
+                if (autoplayRef.current) {
+                    clearInterval(autoplayRef.current)
+                    timerStarted.current = false
+                }
             }
         }
-    }, [])
+    }, [data])
 
-    const slide = () => {
-        sliderRef.current.scrollToIndex({
-            index: sliderIndex,
+    const slide = (ind) => {
+        console.log(ind)
+        sliderRef.current.scrollToOffset({
+            offset: ((data.length - ind - 1) * width),
             animated: true
         })
     }
 
     const viewableChanged = React.useCallback((e) => {
+        console.log("this shits called")
         const scrollX = e.nativeEvent.contentOffset.x
         const offset = ~~Math.abs((scrollX - width * (data.length - 1)))
         setSliderIndex(~~(offset / ~~width))
@@ -68,6 +79,7 @@ const Carousel = ({ autoplay, data, renderer }) => {
                 data={data}
                 horizontal
                 showsHorizontalScrollIndicator={false}
+                scrollEnaled={!scrollDisabled}
                 pagingEnabled
                 ref={sliderRef}
                 renderItem={({ item, index }) => renderer(item)}

@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid/non-secure'
 import React, { useContext, useEffect } from 'react'
 import { View, Text, Pressable, Image, useWindowDimensions } from 'react-native'
 import ProductContext from '../../ContextProviders/ProductContext'
@@ -8,7 +9,7 @@ import { PureView } from '../ProductPage/ProductPage'
 
 
 const Home = ({ navigation }) => {
-    const { products, setProducts } = useContext(ProductContext)
+    const { products, setProducts, isFetching } = useContext(ProductContext)
     const { width } = useWindowDimensions()
 
     useEffect(() => {
@@ -22,7 +23,7 @@ const Home = ({ navigation }) => {
 
     const renderItem = item => {
         return (
-            <PureView>
+            <PureView key={item.key}>
                 <Image source={{ uri: item.image, width, height: 250 }} />
             </PureView>
         );
@@ -30,19 +31,20 @@ const Home = ({ navigation }) => {
 
 
     return (
-        <View style={{ paddingTop: 60}}>
+        <View style={{ paddingTop: 55}}>
             <MainHeader navigation={navigation} />
 
             <Carousel 
-                data={products.splice(0, 6)}
+                data={products.slice(0, 9)}
                 renderer={renderItem}
+                scrollDisabled
                 autoplay={{
                     duration: 5000,
                 }}
             />
 
             <ProductList 
-                products={products.splice(6, 12)}
+                products={products.slice(6, 12)}
                 title="محصولات پرفروش"
             />
         </View>

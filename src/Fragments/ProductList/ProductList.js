@@ -17,6 +17,7 @@ const ProductList = ({ products, title }) => {
                 data={products}
                 horizontal
                 contentContainerStyle={{ display: 'flex' }}
+                keyExtractor={(item) => item.key}
                 renderItem={({ item }) => (
                     <ProductBox ImageSrc={item.image} Title={item.title} Price={item.price} Width={170} />
                 )}

@@ -1,10 +1,12 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TextStyles } from '../../Styles/Index'
 
 
-const TitledHeader = ({ navigation, title }) => {
+const TitledHeader = ({ title }) => {
+    const navigation = useNavigation()
     return (
         <View style={TitledHeaderStyles.Container}>
             <View style={{ ...TitledHeaderStyles.Wrappers, flex: 7 }}>
@@ -20,9 +22,8 @@ const TitledHeader = ({ navigation, title }) => {
                 </Pressable>
             </View>
 
-            <View style={{ flex: 2 }}></View>
 
-            <View style={{ ...TitledHeaderStyles.Wrappers, flex: 3, }}>
+            <View style={{ ...TitledHeaderStyles.Wrappers, flex: 2, }}>
                 <Icon name='magnify' size={24} color={'red'} style={{ flex: 1, ...TitledHeaderStyles.Icons }} />
                 <Icon name='cart' size={24} color={'red'} style={{ flex: 1, ...TitledHeaderStyles.Icons }} />
             </View>
@@ -33,7 +34,7 @@ const TitledHeader = ({ navigation, title }) => {
 
 export default TitledHeader
 
-const TitledHeaderStyles = StyleSheet.create({
+export const TitledHeaderStyles = StyleSheet.create({
     Container: {
         display: 'flex',
         flexDirection: 'row',

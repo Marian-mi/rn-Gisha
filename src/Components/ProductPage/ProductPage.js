@@ -1,17 +1,20 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, Image, useWindowDimensions, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import ProductContext from '../../ContextProviders/ProductContext';
 import Carousel from '../../Fragments/Carousel/Carousel';
-import MainHeader from '../../Fragments/Headers/MainHeader';
+import ProductList from '../../Fragments/ProductList/ProductList';
 import { BoxStyles, Colors, Flex } from '../../Styles/Index';
+import ProductPageHeader from './Header';
 
 const ProductPage = () => {
     const { products } = useContext(ProductContext);
     const data = products.slice(0, 6).map(x => ({ image: x.image, key: x.id }));
 
     const { width } = useWindowDimensions();
+    const [scrollY, setScrollY] = useState(0)
 
     const renderItem = item => {
         return (
@@ -22,29 +25,36 @@ const ProductPage = () => {
     };
 
     return (
-        <View style={{ paddingTop: 55 }}>
-            <MainHeader />
-            <Carousel data={data} renderer={renderItem} />
-            <Title />
-            <View style={{ padding: 20 }}>
-                <Buttons />
-                <View style={Styles.Details}>
-                    <Text style={Styles.Description}>
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.
-                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی
-                        مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد.
-                    </Text>
+        <ScrollView onScroll={(e) => setScrollY(e.nativeEvent.contentOffset.y)} stickyHeaderIndices={[0]}> 
+                <ProductPageHeader title={"عنوان مورد نظر محصول در این قسمت نمایش داده میشود"} scrollY={scrollY}/>
+            <View style={{ position:"relative", zIndex: 0}}>
+                <Carousel data={data} renderer={renderItem} />
+                <Title />
+                <View style={{ padding: 20 }}>
+                    <Buttons />
+                    <View style={Styles.Details}>
+                        <Text style={Styles.Description}>
+                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.
+                            چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی
+                            مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد.
+                        </Text>
 
-                    <Text style={Styles.Price}>۴۶,۴۰۰ تومان</Text>
-                    <Text style={Styles.Score}>با خرید این کالا ۴۰ عدد گیشانتیون دریافت میکنید</Text>
+                        <Text style={Styles.Price}>۴۶,۴۰۰ تومان</Text>
+                        <Text style={Styles.Score}>با خرید این کالا ۴۰ عدد گیشانتیون دریافت میکنید</Text>
 
-                    <View style={Styles.AddtoCart}>
-                        <Icon name="cart-plus" size={32} color={'white'} />
-                        <Text style={{ marginStart: 20, color: 'white', fontSize: 22 }}>افزودن به سبد خرید</Text>
+                        <View style={Styles.AddtoCart}>
+                            <Icon name="cart-plus" size={32} color={'white'} />
+                            <Text style={{ marginStart: 20, color: 'white', fontSize: 22 }}>افزودن به سبد خرید</Text>
+                        </View>
                     </View>
                 </View>
+
+                <ProductList
+                    products={products}
+                    title={"محصولات مشابه"}
+                />
             </View>
-        </View>
+        </ScrollView>
     );
 };
 
