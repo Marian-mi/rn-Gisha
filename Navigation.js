@@ -45,6 +45,7 @@ const ScreenStack = () => {
             <Stack.Screen name="ProductCategory" component={ProductCategory} options={StackOptions} />
             <Stack.Screen name="Search" component={Search} options={StackOptions} />
             <Stack.Screen name="ProductPage" component={ProductPage} options={StackOptions} />
+            <Stack.Screen name="Test" component={Test} options={StackOptions} />
         </Stack.Navigator>
     );
 };
@@ -79,6 +80,10 @@ const CustomDrawerContent = props => {
             <DrawerItem
                 label={() => <Text>ProductPage</Text>}
                 onPress={() => props.navigation.navigate('ProductPage')}
+            />
+            <DrawerItem
+                label={() => <Text>Test</Text>}
+                onPress={() => props.navigation.navigate('Test')}
             />
         </DrawerContentScrollView>
     );

@@ -4,6 +4,7 @@ import React from 'react';
 export const Products = {
     isFetching: true,
     products: [],
+    products: null,
     setProducts: () => {},
 }
 

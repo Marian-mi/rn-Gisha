@@ -17,9 +17,9 @@ const ProductList = ({ products, title }) => {
                 data={products}
                 horizontal
                 contentContainerStyle={{ display: 'flex' }}
-                keyExtractor={(item) => item.key}
+                keyExtractor={(item) => item.ID}
                 renderItem={({ item }) => (
-                    <ProductBox ImageSrc={item.image} Title={item.title} Price={item.price} Width={170} />
+                    <ProductBox ID={item.ID} ImageSrc={"http://192.168.1.104:8182" + item.PicturePath + item.PictureExt} Title={item.Title} Price={item.NewPrice} Width={170} />
                 )}
             />
         </View>

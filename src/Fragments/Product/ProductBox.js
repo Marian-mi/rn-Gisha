@@ -1,11 +1,17 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 
 
-const ProductBox = ({ Title, ImageSrc, Price, Width, FlexBasis, Style }) => {
+const ProductBox = ({ Title, ImageSrc, Price, Width, FlexBasis, Style, ID }) => {
     const ProductBoxStyle = Style === "flat" ? FlatStyles : BoxStyles
+    const navigation = useNavigation()
+
     return (
-        <View style={[ProductBoxStyle.Wrapper, computeWitdth(Width, FlexBasis)]}>
+        <Pressable
+            style={[ProductBoxStyle.Wrapper, computeWitdth(Width, FlexBasis)]}
+            onPress={() => navigation.push("ProductPage", { ID })}
+        >
             <View style={ProductBoxStyle.Image} >
                 <Image source={{ uri: ImageSrc, ...computeImageWidth(Style) }} />
             </View>
@@ -31,7 +37,7 @@ const ProductBox = ({ Title, ImageSrc, Price, Width, FlexBasis, Style }) => {
                     </Text>
                 </>
             }
-        </View>
+        </Pressable>
     )
 }
 
@@ -39,7 +45,7 @@ const computeWitdth = (p1, p2) => {
     return p1 ? { width: p1 } : p2 ? { flexBasis: p2 } : null
 }
 
-const computeImageWidth = (style) => (style === 'flat' ? { width: 90, height: 90 } : { width: 130, height: 170 })
+const computeImageWidth = (style) => (style === 'flat' ? { width: 90, height: 90 } : { width: 120, height: 120 })
 
 const BoxStyles = StyleSheet.create({
     Wrapper: {
@@ -59,7 +65,10 @@ const BoxStyles = StyleSheet.create({
     Price: {
         alignSelf: 'flex-end',
         marginEnd: 20,
-        paddingVertical: 10
+        paddingVertical: 10,
+    },
+    Image: {
+        paddingVertical: 20
     }
 })
 

@@ -6,16 +6,6 @@ import MainHeader from '../../Fragments/Headers/MainHeader'
 import TitledHeader from '../../Fragments/Headers/TitledHeader'
 import SubCategory from './SubCategory'
 
-
-const routesData = [
-    {
-        key: ''
-    },
-    {
-        content: "Lavat"
-    }
-]
-
 const ProductCategory = ({ navigation }) => {
     const dimensions = useWindowDimensions();
 

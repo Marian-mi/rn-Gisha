@@ -2,63 +2,81 @@ import { nanoid } from 'nanoid/non-secure'
 import React, { useContext, useEffect } from 'react'
 import { View, Text, Pressable, Image, useWindowDimensions } from 'react-native'
 import { Axios } from '../../../App'
+import HomeContext from '../../ContextProviders/HomeContext'
 import ProductContext from '../../ContextProviders/ProductContext'
 import Carousel from '../../Fragments/Carousel/Carousel'
 import MainHeader from '../../Fragments/Headers/MainHeader'
-import ProductList from '../../Fragments/ProductList/ProductList'
-import { PureView } from '../ProductPage/ProductPage'
-
+import Banner from '../../Fragments/images/Banner'
+import TextLinkView from '../../Fragments/Links/TextLink'
+import { DynamicLink } from '../../config'
+import Gallery from '../../Fragments/images/Gallery'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const Home = ({ navigation }) => {
-    const { products, setProducts, isFetching } = useContext(ProductContext)
+    const { slider, setHome, text, isFetching, banner, gallery } = useContext(HomeContext)
     const { width } = useWindowDimensions()
 
     useEffect(() => {
         ; (async () => {
             try {
-                const response = await fetch("http://192.168.1.104:8182/api/shop/app/getall", {
-                    body: JSON.stringify({ TagTake: 20 }),
-                    method: 'POST',
-                    headers: { "Content-Type": "application/json; charset=utf-8" }
-                })
-                const data = await response.json();
-                console.log(data)
+                const response = await Axios.post("/app/getall", JSON.stringify({ TagTake: 20 }))
+                const data = await response.data;
 
+                setHome((ps) => ({
+                    ...ps,
+                    slider: data.DynamicLinks.Sliders,
+                    text: data.DynamicLinks.Texts,
+                    banner: data.DynamicLinks.Banners,
+                    gallery: data.DynamicLinks.Galleries,
+                    isFetching: false
+                }))
             }
             catch (err) {
-                console.log(err)
             }
-            //setProducts((ps) => ({...ps, products: data, isFetching: false}))
+
         })();
     }, [])
-    return null
+
     const renderItem = item => {
         return (
-            <PureView key={item.key}>
-                <Image source={{ uri: item.image, width, height: 250 }} />
-            </PureView>
+            <Pressable key={item.ID} onPress={() => navigation.navigate(DynamicLink.LinkTypes[item.LinkType], { LinkID: item.LinkID })}>
+                <Image source={{ uri: DynamicLink.PICTURE_PATH + item.Picture, width, height: 250 }} />
+            </Pressable>
         );
     };
 
 
     return (
-        <View style={{ paddingTop: 55 }}>
-            <MainHeader navigation={navigation} />
+        <ScrollView contentContainerStyle={{ paddingVertical: 55 }}>
+            <MainHeader />
 
             <Carousel
-                data={products.slice(0, 9)}
+                data={slider}
                 renderer={renderItem}
                 scrollDisabled
                 autoplay={{
                     duration: 5000,
                 }}
+                keyExtractor={(item) => item.ID}
             />
 
-            <ProductList
-                products={products.slice(6, 12)}
-                title="محصولات پرفروش"
-            />
-        </View>
+            {isFetching
+                ? <View style={{ height: 30, backgroundColor: "rgba(0,0,0,0.3)" }} />
+                : <TextLinkView data={text} />
+            }
+
+            {isFetching
+                ? <View style={{ height: 0, backgroundColor: "rgba(0,0,0,0.3)" }} />
+                : banner.map(({ ID, LinkID, Picture }) =>
+                    <Banner action={() => navigation.navigate("Search", { LinkID })} name={Picture} key={ID} />)
+            }
+
+            {isFetching
+                ? <View style={{ height: 0, backgroundColor: "rgba(0,0,0,0.3)" }} />
+                : <Gallery items={gallery} />
+            }
+
+        </ScrollView>
     )
 }
 

@@ -6,6 +6,7 @@ export const Search = {
     showSortModal: false,
     selectedSort: 1,
     productListColumns: 2,
+    results: null,
     setSearch: () => {},
 }
 

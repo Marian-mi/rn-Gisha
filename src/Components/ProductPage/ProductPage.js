@@ -1,45 +1,62 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Image, useWindowDimensions, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import { Axios } from '../../../App';
 import ProductContext from '../../ContextProviders/ProductContext';
 import Carousel from '../../Fragments/Carousel/Carousel';
 import ProductList from '../../Fragments/ProductList/ProductList';
 import { BoxStyles, Colors, Flex } from '../../Styles/Index';
 import ProductPageHeader from './Header';
 
-const ProductPage = () => {
-    const { products } = useContext(ProductContext);
-    const data = products.slice(0, 6).map(x => ({ image: x.image, key: x.id }));
+const ProductPage = ({ route }) => {
+    const { product, setProducts } = useContext(ProductContext);
+
+    const { ID } = route.params
 
     const { width } = useWindowDimensions();
     const [scrollY, setScrollY] = useState(0)
 
+    useEffect(() => {
+        ;(async () => {
+            try {
+                const response = await Axios.post("/product/getdetails", { ProductID: ID })
+                const data = await response.data
+
+                setProducts({ product: data })
+            }
+            catch(err) {
+                console.log(err)
+            }
+        })();
+    }, [])
+
     const renderItem = item => {
         return (
-            <PureView>
-                <Image source={{ uri: item.image, width, height: 250 }} />
+            <PureView key={item.Path} style={{ width: width }}>
+                <Image source={{ uri: "http://192.168.1.104:8182" + item.Path, width: width, height: width }} />
             </PureView>
         );
     };
 
+    if (!product) return null
+
+    console.log(product.ProductImages)
     return (
         <ScrollView onScroll={(e) => setScrollY(e.nativeEvent.contentOffset.y)} stickyHeaderIndices={[0]}> 
                 <ProductPageHeader title={"عنوان مورد نظر محصول در این قسمت نمایش داده میشود"} scrollY={scrollY}/>
             <View style={{ position:"relative", zIndex: 0}}>
-                <Carousel data={data} renderer={renderItem} />
-                <Title />
+                <Carousel data={product.ProductImages.BigGallery ?? product.ProductImages} renderer={renderItem} keyExtractor={(item) => item.Path}/>
+                <Title title={product.Title.Main} />
                 <View style={{ padding: 20 }}>
                     <Buttons />
                     <View style={Styles.Details}>
                         <Text style={Styles.Description}>
-                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.
-                            چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی
-                            مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد.
+                            {product.Description}
                         </Text>
 
-                        <Text style={Styles.Price}>۴۶,۴۰۰ تومان</Text>
+                        <Text style={Styles.Price}>{product?.Prices?.NewPrice ?? "----"} {product?.Prices?.PriceUnit}</Text>
                         <Text style={Styles.Score}>با خرید این کالا ۴۰ عدد گیشانتیون دریافت میکنید</Text>
 
                         <View style={Styles.AddtoCart}>
@@ -50,7 +67,7 @@ const ProductPage = () => {
                 </View>
 
                 <ProductList
-                    products={products}
+                    products={product.RelatedProducts}
                     title={"محصولات مشابه"}
                 />
             </View>
@@ -66,7 +83,7 @@ const Title = ({ title }) => (
             <Icon name="heart" size={26} color={Colors.Grey} style={{ marginEnd: 15 }} />
             <Icon name="share-variant" size={26} color={Colors.Grey} />
         </View>
-        <Text style={Styles.TitleText}>عنوان مورد نظر محصول در این قسمت نمایش داده میشود</Text>
+        <Text style={Styles.TitleText}>{title}</Text>
     </View>
 );
 

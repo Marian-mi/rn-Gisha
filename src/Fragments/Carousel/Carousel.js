@@ -5,7 +5,9 @@ import ProductContext from '../../ContextProviders/ProductContext'
 import MainHeader from '../../Fragments/Headers/MainHeader'
 
 
-const Carousel = ({ autoplay, data, renderer, scrollDisabled }) => {
+const Carousel = ({ autoplay, data, renderer, scrollDisabled, keyExtractor }) => {
+    if (!data || data?.length === 0 || Object.prototype.toString.call(data) !== '[object Array]')
+        return null 
     const { width, height } = useWindowDimensions()
 
     const [sliderIndex, setSliderIndex] = useState(0)
@@ -59,7 +61,6 @@ const Carousel = ({ autoplay, data, renderer, scrollDisabled }) => {
     }, [data])
 
     const slide = (ind) => {
-        console.log(ind)
         sliderRef.current.scrollToOffset({
             offset: ((data.length - ind - 1) * width),
             animated: true
@@ -67,7 +68,6 @@ const Carousel = ({ autoplay, data, renderer, scrollDisabled }) => {
     }
 
     const viewableChanged = React.useCallback((e) => {
-        console.log("this shits called")
         const scrollX = e.nativeEvent.contentOffset.x
         const offset = ~~Math.abs((scrollX - width * (data.length - 1)))
         setSliderIndex(~~(offset / ~~width))
@@ -83,7 +83,7 @@ const Carousel = ({ autoplay, data, renderer, scrollDisabled }) => {
                 pagingEnabled
                 ref={sliderRef}
                 renderItem={({ item, index }) => renderer(item)}
-                keyExtractor={(item) => item.key}
+                keyExtractor={keyExtractor ?? ((item) => item.key)}
                 onMomentumScrollEnd={viewableChanged}
             />
             <Indicator count={data.length} current={sliderIndex} />
