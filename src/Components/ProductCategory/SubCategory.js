@@ -1,13 +1,41 @@
-import React, { useState } from 'react'
-import { View, Text, FlatList, Image, StyleSheet } from 'react-native'
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react'
+import { View, Text, FlatList, Image, StyleSheet, Pressable } from 'react-native'
+import { Axios } from '../../../App';
 
 
-const SubCategory = ({ SubCategoryList }) => {
+const SubCategory = ({ mainID }) => {
+    const [items, setItems] = useState(null)
+    const navigation = useNavigation()
+
+    useEffect(() => {
+        ; (async () => {
+            try {
+                const response = await Axios.post("/category/getby", { ParentID: mainID })
+                const data = await response.data
+
+                setItems(data)
+            }
+            catch (err) {
+
+            }
+        })();
+    }, [])
+
+    if (!items || items?.length === 0) return <View><Text>No Data found</Text></View>
+
     return (
         <View>
             <FlatList
-                data={SubCategoryList}
-                renderItem={({ item }) => <SubCategoryBox Title={item.title} ImageUrl={item.image} />}
+                data={items}
+                renderItem={({ item }) =>
+                    <Pressable onPress={() => navigation.navigate("Search", { LinkID: item.ID, Title: item.Title})}>
+                        <SubCategoryBox
+                            Title={item.Title}
+                            ImageUrl={"http://192.168.1.104:8182" + item.Picture}
+                        />
+                    </Pressable>
+                }
             />
         </View>
     )
@@ -25,9 +53,9 @@ const SubCategoryBox = ({ Title, ImageUrl }) => (
 const SubCategoryStyles = StyleSheet.create({
     Contianer: {
     },
-    Box: { 
-        flexDirection: 'row', 
-        alignItems: 'center', 
+    Box: {
+        flexDirection: 'row',
+        alignItems: 'center',
         flex: 1,
         paddingVertical: 20,
         paddingHorizontal: 15,

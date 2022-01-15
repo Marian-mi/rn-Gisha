@@ -14,7 +14,7 @@ const TextLinkView = ({ data }) => {
                 data.map(({ Title, LinkID, ID }) => (
                     <TextLink
                         title={Title}
-                        action={() => navigation.navigate(`Search`, { LinkID })}
+                        action={() => navigation.navigate(`Search`, { LinkID, Title })}
                         key={ID}
                     />
                 ))

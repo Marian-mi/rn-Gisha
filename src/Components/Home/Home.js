@@ -11,15 +11,16 @@ import TextLinkView from '../../Fragments/Links/TextLink'
 import { DynamicLink } from '../../config'
 import Gallery from '../../Fragments/images/Gallery'
 import { ScrollView } from 'react-native-gesture-handler'
+import ProductList from '../../Fragments/ProductList/ProductList'
 
 const Home = ({ navigation }) => {
-    const { slider, setHome, text, isFetching, banner, gallery } = useContext(HomeContext)
+    const { slider, setHome, text, isFetching, banner, gallery, content } = useContext(HomeContext)
     const { width } = useWindowDimensions()
 
     useEffect(() => {
         ; (async () => {
             try {
-                const response = await Axios.post("/app/getall", JSON.stringify({ TagTake: 20 }))
+                const response = await Axios.post("/app/getall", JSON.stringify({ TagTake: 20, DynamicContentTake: 20 }))
                 const data = await response.data;
 
                 setHome((ps) => ({
@@ -28,6 +29,7 @@ const Home = ({ navigation }) => {
                     text: data.DynamicLinks.Texts,
                     banner: data.DynamicLinks.Banners,
                     gallery: data.DynamicLinks.Galleries,
+                    content: data.DynamicContents,
                     isFetching: false
                 }))
             }
@@ -45,6 +47,7 @@ const Home = ({ navigation }) => {
         );
     };
 
+    if (isFetching) return null
 
     return (
         <ScrollView contentContainerStyle={{ paddingVertical: 55 }}>
@@ -60,21 +63,39 @@ const Home = ({ navigation }) => {
                 keyExtractor={(item) => item.ID}
             />
 
-            {isFetching
-                ? <View style={{ height: 30, backgroundColor: "rgba(0,0,0,0.3)" }} />
-                : <TextLinkView data={text} />
-            }
+            <TextLinkView data={text} />
 
-            {isFetching
-                ? <View style={{ height: 0, backgroundColor: "rgba(0,0,0,0.3)" }} />
-                : banner.map(({ ID, LinkID, Picture }) =>
-                    <Banner action={() => navigation.navigate("Search", { LinkID })} name={Picture} key={ID} />)
-            }
+            <ProductList
+                products={content[0].Items}
+                title={content[0].Title}
+                showMoreButton={content[0].ContentType === 3}
+                showMoreAction={() => navigation.navigate("Search", { LinkID: content[0].ContentID, Title: content[0].Title })}
+                key={content[0].ContentID}
+            />
 
-            {isFetching
-                ? <View style={{ height: 0, backgroundColor: "rgba(0,0,0,0.3)" }} />
-                : <Gallery items={gallery} />
-            }
+            <Banner
+                action={() => navigation.navigate("Search", { LinkID: banner[0].LinkID })}
+                name={banner[0].Picture}
+                key={banner[0].ID}
+            />
+
+            <Gallery items={gallery} />
+
+            <Banner
+                action={() => navigation.navigate("Search", { LinkID: banner[1].LinkID })}
+                name={banner[1].Picture}
+                key={banner[1].ID}
+            />
+
+            {content.slice(1).map(({ Items, Title, ContentType, ContentID }) => (
+                <ProductList
+                    products={Items}
+                    title={Title}
+                    showMoreButton={ContentType === 3}
+                    showMoreAction={() => navigation.navigate("Search", { LinkID: ContentID, Title: Title })}
+                    key={ContentID}
+                />
+            ))}
 
         </ScrollView>
     )

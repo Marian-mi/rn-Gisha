@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { View, Text } from 'react-native'
 import { HomeProvider } from './HomeContext'
+import { CategoryProvider } from './CategoryContext'
 import ProductContext, { Products } from './ProductContext'
 import SearchContext, { Search } from './SearchContext'
 
@@ -10,11 +11,13 @@ const MainContextProvider = ({ children }) => {
 
     return (
         <HomeProvider>
-            <ProductContext.Provider value={{ ...products, setProducts }} >
-                <SearchContext.Provider value={{ ...search, setSearch }}>
-                    {children}
-                </SearchContext.Provider>
-            </ProductContext.Provider>
+            <CategoryProvider>
+                <ProductContext.Provider value={{ ...products, setProducts }} >
+                    <SearchContext.Provider value={{ ...search, setSearch }}>
+                        {children}
+                    </SearchContext.Provider>
+                </ProductContext.Provider>
+            </CategoryProvider>
         </HomeProvider>
     )
 }

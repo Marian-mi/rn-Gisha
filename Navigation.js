@@ -1,10 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Colors } from './src/Styles/Index';
+import { BoxStyles, Colors, Flex } from './src/Styles/Index';
 
 //#region Pages
 import Home from './src/Components/Home/Home';
@@ -12,6 +12,7 @@ import ProductCategory from './src/Components/ProductCategory/ProductCategory';
 import Search from './src/Components/Search/Search';
 import Test from './src/Components/Test/Test';
 import ProductPage from './src/Components/ProductPage/ProductPage';
+import HomeContext from './src/ContextProviders/HomeContext';
 //#endregion
 
 const Drawer = createDrawerNavigator();
@@ -51,40 +52,70 @@ const ScreenStack = () => {
 };
 
 const CustomDrawerContent = props => {
+    const { content, isFetching } = useContext(HomeContext)
     return (
         <DrawerContentScrollView {...props}>
-            <DrawerHeader />
-            <DrawerItem
-                label={() => <Text>خانه</Text>}
-                onPress={() => props.navigation.navigate('Home')}
-                icon={() => <Icon name="home" size={26} color="#5f5f5f" />}
-            />
-            <DrawerItem
-                label={() => <Text>لیست دسته بندی محصولات</Text>}
-                onPress={() => props.navigation.navigate('ProductCategory')}
-                icon={() => (
-                    <Icon
-                        name="format-list-bulleted"
-                        size={26}
-                        color="#5f5f5f"
-                        style={{
-                            transform: [
-                                {
-                                    rotate: '180deg',
-                                },
-                            ],
-                        }}
-                    />
+            <View>
+                <DrawerHeader />
+            </View>
+            <View style={[DrawerStyles.Section]}>
+                <DrawerItem
+                    label={() => <Text>خانه</Text>}
+                    onPress={() => props.navigation.navigate('Home')}
+                    icon={() => <Icon name="home" size={26} color="#5f5f5f" />}
+                />
+                <DrawerItem
+                    label={() => <Text>لیست دسته بندی محصولات</Text>}
+                    onPress={() => props.navigation.navigate('ProductCategory')}
+                    icon={() => (
+                        <Icon
+                            name="format-list-bulleted"
+                            size={26}
+                            color="#5f5f5f"
+                            style={{
+                                transform: [
+                                    {
+                                        rotate: '180deg',
+                                    },
+                                ],
+                            }}
+                        />
+                    )}
+                />
+            </View>
+            <View style={[DrawerStyles.Section]}>
+                <DrawerItem
+                    label={() => (
+                        <View>
+                            <Text>سبد خرید</Text>
+                            <Text style={[DrawerStyles.Counter]}>۰</Text>
+                        </View>
+                    )}
+                    onPress={() => props.navigation.navigate('Home')}
+                    icon={() => <Icon name="cart" size={26} color="#5f5f5f" />}
+                />
+            </View>
+            <View style={[DrawerStyles.Section]}>
+                {isFetching === false && (
+                    content.map(({ Title, ContentID, Items }) => (
+                        <DrawerItem
+                            label={() => <Text>{Title}</Text>}
+                            onPress={() => props.navigation.navigate('Search', { LinkID: ContentID })}
+                            icon={() => <Icon name="star" size={26} color="#5f5f5f" />}
+                        />
+                    ))
                 )}
-            />
-            <DrawerItem
-                label={() => <Text>ProductPage</Text>}
-                onPress={() => props.navigation.navigate('ProductPage')}
-            />
-            <DrawerItem
-                label={() => <Text>Test</Text>}
-                onPress={() => props.navigation.navigate('Test')}
-            />
+            </View>
+            <View style={{ paddingTop: 30 }}>
+                <DrawerItem
+                    label={() => <Text>سوالات متداول</Text>}
+                    icon={() => <Icon name="crosshairs-question" size={26} color="#5f5f5f" />}
+                />
+                <DrawerItem
+                    label={() => <Text>درباره ما</Text>}
+                    icon={() => <Icon name="information" size={26} color="#5f5f5f" />}
+                />
+            </View>
         </DrawerContentScrollView>
     );
 };
@@ -123,6 +154,22 @@ const DrawerStyles = StyleSheet.create({
         borderWidth: 1.5,
         textAlign: 'center',
     },
+    Section: {
+        borderBottomColor: "#ddd",
+        borderBottomWidth: 1,
+    },
+    Counter: {
+        width: 30,
+        top: -5,
+        height: 30,
+        position: 'absolute',
+        right: -30,
+        borderRadius: 50,
+        backgroundColor: "#bbb",
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        ...BoxStyles.Shadow
+    }
 });
 
 export default NavigationStacks;

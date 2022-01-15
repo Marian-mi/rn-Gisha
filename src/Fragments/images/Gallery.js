@@ -33,7 +33,7 @@ const Gallery = ({ items }) => {
         let currentRowWidth = 0;
 
         const { current } = dimensions
-        console.log(current)
+        
         current.forEach((item, index) => {
             currentRowWidth += item.width
             const currentImg = items[item.ind]

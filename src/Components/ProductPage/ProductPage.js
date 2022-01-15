@@ -9,6 +9,7 @@ import Carousel from '../../Fragments/Carousel/Carousel';
 import ProductList from '../../Fragments/ProductList/ProductList';
 import { BoxStyles, Colors, Flex } from '../../Styles/Index';
 import ProductPageHeader from './Header';
+import RenderHtml from 'react-native-render-html'
 
 const ProductPage = ({ route }) => {
     const { product, setProducts } = useContext(ProductContext);
@@ -19,14 +20,14 @@ const ProductPage = ({ route }) => {
     const [scrollY, setScrollY] = useState(0)
 
     useEffect(() => {
-        ;(async () => {
+        ; (async () => {
             try {
                 const response = await Axios.post("/product/getdetails", { ProductID: ID })
                 const data = await response.data
 
                 setProducts({ product: data })
             }
-            catch(err) {
+            catch (err) {
                 console.log(err)
             }
         })();
@@ -42,20 +43,22 @@ const ProductPage = ({ route }) => {
 
     if (!product) return null
 
-    console.log(product.ProductImages)
     return (
-        <ScrollView onScroll={(e) => setScrollY(e.nativeEvent.contentOffset.y)} stickyHeaderIndices={[0]}> 
-                <ProductPageHeader title={"عنوان مورد نظر محصول در این قسمت نمایش داده میشود"} scrollY={scrollY}/>
-            <View style={{ position:"relative", zIndex: 0}}>
-                <Carousel data={product.ProductImages.BigGallery ?? product.ProductImages} renderer={renderItem} keyExtractor={(item) => item.Path}/>
+        <ScrollView onScroll={(e) => setScrollY(e.nativeEvent.contentOffset.y)} stickyHeaderIndices={[0]}>
+            <ProductPageHeader title={"عنوان مورد نظر محصول در این قسمت نمایش داده میشود"} scrollY={scrollY} />
+            <View style={{ position: "relative", zIndex: 0 }}>
+                <Carousel data={product.ProductImages.BigGallery ?? product.ProductImages} renderer={renderItem} keyExtractor={(item) => item.Path} />
                 <Title title={product.Title.Main} />
                 <View style={{ padding: 20 }}>
                     <Buttons />
                     <View style={Styles.Details}>
-                        <Text style={Styles.Description}>
-                            {product.Description}
-                        </Text>
-
+                        <View style={Styles.Description}>
+                            <RenderHtml
+                                style
+                                source={{ html: product.Description }}
+                                contentWidth={300}
+                            />
+                        </View>
                         <Text style={Styles.Price}>{product?.Prices?.NewPrice ?? "----"} {product?.Prices?.PriceUnit}</Text>
                         <Text style={Styles.Score}>با خرید این کالا ۴۰ عدد گیشانتیون دریافت میکنید</Text>
 
@@ -67,8 +70,12 @@ const ProductPage = ({ route }) => {
                 </View>
 
                 <ProductList
-                    products={product.RelatedProducts}
+                    products={product.SimilarProducts}
                     title={"محصولات مشابه"}
+                />
+                <ProductList
+                    products={product.RelatedProducts}
+                    title={"محصولات مرتبط"}
                 />
             </View>
         </ScrollView>

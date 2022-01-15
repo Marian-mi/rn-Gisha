@@ -1,9 +1,9 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { Colors } from '../../Styles/Index';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Colors, Flex } from '../../Styles/Index';
 import ProductBox from '../Product/ProductBox';
 
-const ProductList = ({ products, title }) => {
+const ProductList = ({ products, title, showMoreButton, showMoreAction }) => {
     if (!products || products?.length === 0)
         return (
             <Text style={{ height: 300, textAlign: 'center', textAlignVertical: 'center', backgroundColor: 'white' }}>
@@ -12,7 +12,14 @@ const ProductList = ({ products, title }) => {
         );
     return (
         <View style={{ marginVertical: 30 }}>
-            <Text style={Styles.Title}>{title}</Text>
+            <View style={[Flex.Row, { justifyContent: 'space-between', paddingHorizontal: 15 }]}>
+                <Text style={Styles.Title}>{title}</Text>
+                {showMoreButton
+                    && <Pressable onPress={() => showMoreAction()}>
+                        <Text style={Styles.ShowMore}>لیست کامل</Text>
+                    </Pressable>
+                }
+            </View>
             <FlatList
                 data={products}
                 horizontal
@@ -28,11 +35,14 @@ const ProductList = ({ products, title }) => {
 
 const Styles = StyleSheet.create({
     Title: {
-        paddingHorizontal: 15,
         fontWeight: '600',
         color: Colors.Dark,
         fontSize: 20,
     },
+    ShowMore: {
+        color: "#3ba0f2",
+        fontWeight: "600"
+    }
 });
 
 export default ProductList;

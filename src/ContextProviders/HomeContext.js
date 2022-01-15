@@ -6,6 +6,7 @@ export const Home = {
     text: [],
     banner: [],
     gallery: [],
+    content: [],
     setHome: () => {},
     isFetching: true,
 }

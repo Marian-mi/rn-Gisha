@@ -15,7 +15,7 @@ const Search = ({ navigation, route }) => {
     const productCtx = useContext(ProductContext);
     const searchCtx = useContext(SearchContext)
 
-    const { LinkID } = route.params
+    const { LinkID, Title } = route.params
 
     const { products } = productCtx
     const { productListColumns, results, setSearch } = searchCtx
@@ -36,7 +36,7 @@ const Search = ({ navigation, route }) => {
 
     return (
         <View style={{ paddingTop: 55 }}>
-            <TitledHeader navigation={navigation} title={"جست و جو"} />
+            <TitledHeader navigation={navigation} title={Title ?? "جست و جو"} />
             <SearchControls />
             <Sorts />
             <FlatList
