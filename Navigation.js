@@ -97,12 +97,13 @@ const CustomDrawerContent = props => {
             </View>
             <View style={[DrawerStyles.Section]}>
                 {isFetching === false && (
-                    content.map(({ Title, ContentID, Items }) => (
+                    content.filter(x => x.ContentType === 2).slice(0, 4).map(({ Title, ContentID }) => (
                         <DrawerItem
                             label={() => <Text>{Title}</Text>}
                             onPress={() => props.navigation.navigate('Search', { LinkID: ContentID })}
                             icon={() => <Icon name="star" size={26} color="#5f5f5f" />}
-                        />
+                            key={ContentID}
+                        /> 
                     ))
                 )}
             </View>

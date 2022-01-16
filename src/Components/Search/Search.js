@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { View, Text } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import { Axios } from '../../../App'
@@ -6,6 +6,8 @@ import { DynamicLink } from '../../config'
 import ProductContext from '../../ContextProviders/ProductContext'
 import SearchContext from '../../ContextProviders/SearchContext'
 import TitledHeader from '../../Fragments/Headers/TitledHeader'
+import EmptyList from '../../Fragments/Informatic/EmtyList'
+import DotsLoader from '../../Fragments/Loaders/DotsLoader'
 import ProductBox from '../../Fragments/Product/ProductBox'
 import SearchControls from '../../Fragments/Search/Contorls'
 import Sorts from '../../Fragments/Search/SortsModal'
@@ -18,7 +20,11 @@ const Search = ({ navigation, route }) => {
     const { LinkID, Title } = route.params
 
     const { products } = productCtx
-    const { productListColumns, results, setSearch } = searchCtx
+    const { productListColumns, results, setSearch, isFetching } = searchCtx
+
+    useLayoutEffect(() => {
+        setSearch((ps) => ({ ...ps, isFetching: true }))
+    }, [])
 
     useEffect(() => {
         ; (async () => {
@@ -26,13 +32,22 @@ const Search = ({ navigation, route }) => {
                 const response = await Axios.post("/af/find", JSON.stringify({ ProductGroupId: LinkID, Take: 30 }))
                 const data = await response.data
 
-                setSearch({ ...searchCtx, results: data.Products })
+                setSearch({ ...searchCtx, results: data.Products, isFetching: false })
             }
-            catch(err) {
+            catch (err) {
                 console.log(err)
             }
         })();
     }, [])
+
+    if (isFetching) return <DotsLoader />
+
+    if (results?.length === 0 || !results) return (
+        <View style={{ paddingTop: 55 }}>
+            <TitledHeader navigation={navigation} title={Title ?? "جست و جو"} />
+            <EmptyList text={"محصولی پیدا نشد!"}/>
+        </View>
+    )
 
     return (
         <View style={{ paddingTop: 55 }}>

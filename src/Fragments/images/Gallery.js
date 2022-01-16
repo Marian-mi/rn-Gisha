@@ -33,24 +33,28 @@ const Gallery = ({ items }) => {
         let currentRowWidth = 0;
 
         const { current } = dimensions
-        
+
         current.forEach((item, index) => {
             currentRowWidth += item.width
             const currentImg = items[item.ind]
-            
-            if (currentRowWidth > width && row.length === 0) {
+
+            row.push(buildImage({ ...item, Picture: items[item.ind].Picture, key: currentImg.ID, reduce: 15 }))
+
+            if (currentRowWidth > width && row.length === 1) {
                 elements.push(
                     <View key={currentImg.ID} style={[Flex.Row, Styles.Frame]}>
-                        {buildImage({ height: item.height , Picture: items[item.ind].Picture, width, reduce: 30 })}
+                        {buildImage({ height: item.height, Picture: items[item.ind].Picture, width, reduce: 30 })}
                     </View>
                 )
                 currentRowWidth = 0
+                row = []
                 return
             }
-            
-            if (currentRowWidth > width) {
+
+            if (currentRowWidth > width
+                || currentRowWidth + current[index + 1]?.width > width) {
                 elements.push(
-                    <View style={[Flex.Row, { marginHorizontal: 30 }]} key={currentImg.ID}>
+                    <View style={[Flex.Row, { justifyContent: 'space-between', paddingHorizontal: 15 }]} key={currentImg.ID}>
                         {row}
                     </View>
                 )
@@ -58,30 +62,30 @@ const Gallery = ({ items }) => {
                 currentRowWidth = 0
                 return
             }
-            
-            row.push(buildImage({ ...item, Picture: items[item.ind].Picture, key: currentImg.ID, reduce: 15 }))
-            
+
+
             if (item.ind === items.length - 1) {
                 elements.push(
-                    <View style={[Flex.Row, { justifyContent: 'space-between', paddingHorizontal: 15}]} key={currentImg.ID}>
+                    <View style={[Flex.Row, { justifyContent: 'space-between', paddingHorizontal: 15 }]} key={currentImg.ID}>
                         {row}
                     </View>
                 )
             }
         })
-        
+
         setImages(elements)
     }
 
     const buildImage = ({ width, Picture, height, key, reduce }) =>
-        <Image
-            key={key ?? 0}
-            source={{
-                uri: DynamicLink.PICTURE_PATH + Picture,
-                width: width - reduce,
-                height: height > 250 ? (((width - 30) * (9 / 16))) : height - (reduce / 2)
-            }}
-        />
+        <View style={[{ shadowColor: "rbga(0,0,0,1)", elevation: 20 }]} key={key ?? 0}>
+            <Image
+                source={{
+                    uri: DynamicLink.PICTURE_PATH + Picture,
+                    width: width - reduce,
+                    height: height > 250 ? (((width - 30) * (9 / 16))) : height - (reduce / 2)
+                }}
+            />
+        </View>
 
     if (!images)
         return <View style={{ height: 250, ...Flex.Centered }}><Text>Loading...</Text></View>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { View, Text, Image, useWindowDimensions, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,14 +10,19 @@ import ProductList from '../../Fragments/ProductList/ProductList';
 import { BoxStyles, Colors, Flex } from '../../Styles/Index';
 import ProductPageHeader from './Header';
 import RenderHtml from 'react-native-render-html'
+import DotsLoader from '../../Fragments/Loaders/DotsLoader';
 
 const ProductPage = ({ route }) => {
-    const { product, setProducts } = useContext(ProductContext);
+    const { product, setProducts, isFetching } = useContext(ProductContext);
 
     const { ID } = route.params
 
     const { width } = useWindowDimensions();
     const [scrollY, setScrollY] = useState(0)
+
+    useLayoutEffect(() => {
+        setProducts((ps) => ({ ...ps, isFetching: true }))
+    }, [])
 
     useEffect(() => {
         ; (async () => {
@@ -25,13 +30,15 @@ const ProductPage = ({ route }) => {
                 const response = await Axios.post("/product/getdetails", { ProductID: ID })
                 const data = await response.data
 
-                setProducts({ product: data })
+                setProducts({ product: data, isFetching: false })
             }
             catch (err) {
                 console.log(err)
             }
         })();
     }, [])
+
+    if (isFetching) return <DotsLoader /> 
 
     const renderItem = item => {
         return (
@@ -41,7 +48,6 @@ const ProductPage = ({ route }) => {
         );
     };
 
-    if (!product) return null
 
     return (
         <ScrollView onScroll={(e) => setScrollY(e.nativeEvent.contentOffset.y)} stickyHeaderIndices={[0]}>

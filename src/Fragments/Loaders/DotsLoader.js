@@ -1,20 +1,9 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import { View, Text, Image, useWindowDimensions, Pressable, StyleSheet, Animated, Easing } from 'react-native'
-import { Directions, FlatList } from 'react-native-gesture-handler'
-import HomeContext from '../../ContextProviders/HomeContext'
-import ProductContext from '../../ContextProviders/ProductContext'
-import MainHeader from '../../Fragments/Headers/MainHeader'
-import Gallery from '../../Fragments/images/Gallery'
-import { Colors, Flex } from '../../Styles/Index'
+import React, { useEffect, useRef, useState } from 'react'
+import { View, Text, Animated, StyleSheet, Easing } from 'react-native'
+import { Flex } from '../../Styles/Index'
 
 
-const Test = () => {
-    return (
-        <Loader />
-    )
-}
-
-const Loader = () => {
+const DotsLoader = () => {
     const ref = useRef(new Animated.Value(0)).current
 
     useEffect(() => {
@@ -62,4 +51,4 @@ const Styles = StyleSheet.create({
     }
 })
 
-export default Test
+export default DotsLoader

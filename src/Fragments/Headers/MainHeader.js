@@ -25,7 +25,7 @@ const MainHeader = () => {
             <View style={{ flex: 4 }}></View>
             
             <View style={{ ...HomeHeaderStyles.Wrappers, flex: 3, }}>
-                <Pressable onPress={() => navigation.navigate("Search")}>
+                <Pressable onPress={() => navigation.navigate("Test")}>
                     <Icon name='magnify' size={24} color={'red'} style={{ flex: 1, ...HomeHeaderStyles.Icons }} />
                 </Pressable>
                 <Icon name='cart' size={24} color={'red'} style={{ flex: 1, ...HomeHeaderStyles.Icons }} />
