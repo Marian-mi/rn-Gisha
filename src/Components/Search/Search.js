@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { View, Text } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import { Axios } from '../../../App'
-import { DynamicLink } from '../../config'
+import { AppHelper, DynamicLink } from '../../config'
 import ProductContext from '../../ContextProviders/ProductContext'
 import SearchContext from '../../ContextProviders/SearchContext'
 import TitledHeader from '../../Fragments/Headers/TitledHeader'
@@ -35,6 +35,7 @@ const Search = ({ navigation, route }) => {
                 setSearch({ ...searchCtx, results: data.Products, isFetching: false })
             }
             catch (err) {
+                setSearch((ps) => ({...ps, isFetching: false}))
                 console.log(err)
             }
         })();
@@ -61,7 +62,7 @@ const Search = ({ navigation, route }) => {
                 renderItem={({ item }) => (
                     <ProductBox
                         Title={item.Title}
-                        ImageSrc={"http://192.168.1.104:8182" + item.PicturePath + item.PictureExt}
+                        ImageSrc={AppHelper.MapToServerPath(item.PicturePath + item.PictureExt)}
                         Price={item.NewPrice}
                         key={item.ID}
                         FlexBasis={`${(100 / productListColumns) - 5}%`}

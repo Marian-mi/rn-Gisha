@@ -2,8 +2,6 @@ import { nanoid } from 'nanoid/non-secure'
 import React, { useContext, useEffect } from 'react'
 import { View, Text, Pressable, Image, useWindowDimensions } from 'react-native'
 import { Axios } from '../../../App'
-import HomeContext from '../../ContextProviders/HomeContext'
-import ProductContext from '../../ContextProviders/ProductContext'
 import Carousel from '../../Fragments/Carousel/Carousel'
 import MainHeader from '../../Fragments/Headers/MainHeader'
 import Banner from '../../Fragments/images/Banner'
@@ -12,9 +10,11 @@ import { DynamicLink } from '../../config'
 import Gallery from '../../Fragments/images/Gallery'
 import { ScrollView } from 'react-native-gesture-handler'
 import ProductList from '../../Fragments/ProductList/ProductList'
+import DotsLoader from '../../Fragments/Loaders/DotsLoader'
+import AppContext from '../../ContextProviders/AppContext'
 
 const Home = ({ navigation }) => {
-    const { slider, setHome, text, isFetching, banner, gallery, content } = useContext(HomeContext)
+    const { slider, setApp, text, isFetching, banner, gallery, content } = useContext(AppContext)
     const { width } = useWindowDimensions()
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const Home = ({ navigation }) => {
                 const response = await Axios.post("/app/getall", JSON.stringify({ TagTake: 20, DynamicContentTake: 20 }))
                 const data = await response.data;
 
-                setHome((ps) => ({
+                setApp((ps) => ({
                     ...ps,
                     slider: data.DynamicLinks.Sliders,
                     text: data.DynamicLinks.Texts,
@@ -47,7 +47,7 @@ const Home = ({ navigation }) => {
         );
     };
 
-    if (isFetching) return null
+    if (isFetching) return <DotsLoader />
 
     return (
         <ScrollView contentContainerStyle={{ paddingVertical: 55 }}>

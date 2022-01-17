@@ -9,7 +9,7 @@ const RadioButton = ({ Title, SetSelected, Selected, Index }) => {
             <View style={[Styles.CircleOuter, Flex.Centered,  { display: "flex", borderColor: Selected ? "#4cb050" : Colors.Grey }]}>
                 <View style={[Styles.CircleInner, { backgroundColor: Selected ? "#4cb050" : "transparent"}]}></View>
             </View>
-            <Text style={{ textAlignVertical: 'center', marginStart: 20, fontWeight: "600" }}>
+            <Text style={Styles.Title}>
                 {Title}
             </Text>
         </Pressable>
@@ -25,12 +25,18 @@ const Styles = StyleSheet.create({
         width: 20,
         height: 20,
         borderWidth: 2,
-        borderRadius: 50
+        borderRadius: 50,
+        
     },
     CircleInner: {
         width: 10,
         height: 10,
         borderRadius: 50
+    },
+    Title: { 
+        textAlignVertical: 'center', 
+        marginStart: 20, 
+        fontFamily: "Samim-Bold"
     }
 })
 

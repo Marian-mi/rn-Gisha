@@ -41,8 +41,9 @@ const Styles = StyleSheet.create({
         marginHorizontal: 5,
         padding: 6,
         paddingHorizontal: 22,
-        fontSize: 15,
+        fontSize: 13,
         ...BoxStyles.Shadow,
+        fontFamily: "Samim",
         textAlign: 'center',
         textAlignVertical: 'center'
     }

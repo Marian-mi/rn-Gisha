@@ -12,7 +12,7 @@ import ProductCategory from './src/Components/ProductCategory/ProductCategory';
 import Search from './src/Components/Search/Search';
 import Test from './src/Components/Test/Test';
 import ProductPage from './src/Components/ProductPage/ProductPage';
-import HomeContext from './src/ContextProviders/HomeContext';
+import AppContext from './src/ContextProviders/AppContext';
 //#endregion
 
 const Drawer = createDrawerNavigator();
@@ -52,7 +52,7 @@ const ScreenStack = () => {
 };
 
 const CustomDrawerContent = props => {
-    const { content, isFetching } = useContext(HomeContext)
+    const { content, isFetching, isAuthenticated, setApp } = useContext(AppContext)
     return (
         <DrawerContentScrollView {...props}>
             <View>
@@ -60,12 +60,12 @@ const CustomDrawerContent = props => {
             </View>
             <View style={[DrawerStyles.Section]}>
                 <DrawerItem
-                    label={() => <Text>خانه</Text>}
+                    label={() => <Text style={DrawerStyles.Label}>خانه</Text>}
                     onPress={() => props.navigation.navigate('Home')}
                     icon={() => <Icon name="home" size={26} color="#5f5f5f" />}
                 />
                 <DrawerItem
-                    label={() => <Text>لیست دسته بندی محصولات</Text>}
+                    label={() => <Text style={DrawerStyles.Label}>لیست دسته بندی محصولات</Text>}
                     onPress={() => props.navigation.navigate('ProductCategory')}
                     icon={() => (
                         <Icon
@@ -87,11 +87,10 @@ const CustomDrawerContent = props => {
                 <DrawerItem
                     label={() => (
                         <View>
-                            <Text>سبد خرید</Text>
+                            <Text style={DrawerStyles.Label}>سبد خرید</Text>
                             <Text style={[DrawerStyles.Counter]}>۰</Text>
                         </View>
                     )}
-                    onPress={() => props.navigation.navigate('Home')}
                     icon={() => <Icon name="cart" size={26} color="#5f5f5f" />}
                 />
             </View>
@@ -99,42 +98,56 @@ const CustomDrawerContent = props => {
                 {isFetching === false && (
                     content.filter(x => x.ContentType === 2).slice(0, 4).map(({ Title, ContentID }) => (
                         <DrawerItem
-                            label={() => <Text>{Title}</Text>}
+                            label={() => <Text style={DrawerStyles.Label}>{Title}</Text>}
                             onPress={() => props.navigation.navigate('Search', { LinkID: ContentID })}
                             icon={() => <Icon name="star" size={26} color="#5f5f5f" />}
                             key={ContentID}
-                        /> 
+                        />
                     ))
                 )}
             </View>
             <View style={{ paddingTop: 30 }}>
                 <DrawerItem
-                    label={() => <Text>سوالات متداول</Text>}
+                    label={() => <Text style={DrawerStyles.Label}>سوالات متداول</Text>}
                     icon={() => <Icon name="crosshairs-question" size={26} color="#5f5f5f" />}
                 />
                 <DrawerItem
-                    label={() => <Text>درباره ما</Text>}
+                    label={() => <Text style={DrawerStyles.Label}>درباره ما</Text>}
                     icon={() => <Icon name="information" size={26} color="#5f5f5f" />}
                 />
+                {isAuthenticated && (
+                    <DrawerItem
+                        style={{ backgroundColor: "rgba(200,0,0,0.1)"}}
+                        label={() => <Text style={DrawerStyles.Label}>خروج</Text>}
+                        icon={() => <Icon name="logout" size={26} color="#5f5f5f" />}
+                        onPress={() => setApp(ps => ({...ps, isAuthenticated: false}))}
+                    />
+                )}
             </View>
         </DrawerContentScrollView>
     );
 };
 
 const DrawerHeader = () => {
+    const { setApp, isAuthenticated } = useContext(AppContext)
     return (
-        <View style={DrawerStyles.HeaderContainer}>
-            <Icon name="account" color="white" size={26} style={{ marginEnd: 15 }} />
-            <Text style={DrawerStyles.HeaderText}>ورود و ثبت نام</Text>
-        </View>
+        <Pressable style={DrawerStyles.HeaderContainer} onPress={() => setApp((ps) => ({ ...ps, isAuthenticated: true }))}>
+            {isAuthenticated ? <View><Text style={[DrawerStyles.Label, { color: 'white'}]}>کاربر گرامی, خوش آمدید</Text></View>
+                : (
+                    <>
+                        <Icon name="account" color="white" size={26} style={{ marginEnd: 15 }} />
+                        <Text style={[DrawerStyles.HeaderText]}>ورود و ثبت نام</Text>
+                    </>
+                )}
+        </Pressable>
     );
 };
 
 const DrawerStyles = StyleSheet.create({
     Label: {
-        fontSize: 15,
+        fontSize: 13,
         color: '#5f5f5f',
-        fontWeight: '700',
+        fontFamily: "Samim",
     },
     HeaderContainer: {
         height: 80,
@@ -148,12 +161,13 @@ const DrawerStyles = StyleSheet.create({
     HeaderText: {
         paddingHorizontal: 10,
         paddingVertical: 8,
-        fontWeight: '700',
         borderRadius: 8,
         borderColor: 'white',
         color: 'white',
         borderWidth: 1.5,
         textAlign: 'center',
+        fontSize: 13,
+        fontFamily: "Samim",
     },
     Section: {
         borderBottomColor: "#ddd",
@@ -169,6 +183,7 @@ const DrawerStyles = StyleSheet.create({
         backgroundColor: "#bbb",
         textAlign: 'center',
         textAlignVertical: 'center',
+        fontFamily: "Samim",
         ...BoxStyles.Shadow
     }
 });

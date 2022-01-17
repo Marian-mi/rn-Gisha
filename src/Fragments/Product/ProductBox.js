@@ -61,11 +61,13 @@ const BoxStyles = StyleSheet.create({
         borderColor: '#e3e3e3',
         padding: 20,
         maxHeight: 60,
+        fontFamily: "Samim",
     },
     Price: {
         alignSelf: 'flex-end',
         marginEnd: 20,
         paddingVertical: 10,
+        fontFamily: "Samim",
     },
     Image: {
         paddingVertical: 20

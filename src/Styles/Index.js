@@ -10,8 +10,8 @@ export const Colors = {
 export const TextStyles = StyleSheet.create({
     Title1: {
         color: 'white',
-        fontWeight: "700",
         fontSize: 16,
+        fontFamily: "Samim"
     }
 })
 

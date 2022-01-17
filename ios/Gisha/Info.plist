@@ -36,7 +36,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -51,5 +51,48 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Samim-Bold.ttf</string>
+		<string>Samim.ttf</string>
+		<string>Samim.woff2</string>
+		<string>Samim-Bold-FD-WOL.ttf</string>
+		<string>Samim-Bold-FD-WOL.woff</string>
+		<string>Samim-Bold-FD-WOL.woff2</string>
+		<string>Samim-FD-WOL.ttf</string>
+		<string>Samim-FD-WOL.woff</string>
+		<string>Samim-FD-WOL.woff2</string>
+		<string>Samim-Bold-FD.ttf</string>
+		<string>Samim-Bold-FD.woff</string>
+		<string>Samim-Bold-FD.woff2</string>
+		<string>Samim-FD.ttf</string>
+		<string>Samim-FD.woff</string>
+		<string>Samim-FD.woff2</string>
+		<string>Samim-Bold.woff</string>
+		<string>Samim-Bold.woff2</string>
+		<string>Samim.woff</string>
+		<string>Samim-Bold-WOL.ttf</string>
+		<string>Samim-Bold-WOL.woff</string>
+		<string>Samim-Bold-WOL.woff2</string>
+		<string>Samim-WOL.ttf</string>
+		<string>Samim-WOL.woff</string>
+		<string>Samim-WOL.woff2</string>
+		<string>AntDesign.ttf</string>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>Fontisto.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Zocial.ttf</string>
+	</array>
 </dict>
 </plist>

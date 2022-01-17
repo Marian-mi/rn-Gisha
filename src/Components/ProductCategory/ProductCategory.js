@@ -1,9 +1,11 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { View, Text, useWindowDimensions, Pressable, StyleSheet } from 'react-native'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
 import { Axios } from '../../../App'
 import CategoryContext from '../../ContextProviders/CategoryContext'
 import TitledHeader from '../../Fragments/Headers/TitledHeader'
+import EmptyList from '../../Fragments/Informatic/EmtyList'
+import DotsLoader from '../../Fragments/Loaders/DotsLoader'
 import SubCategory from './SubCategory'
 
 const ProductCategory = ({ navigation }) => {
@@ -11,6 +13,10 @@ const ProductCategory = ({ navigation }) => {
 
     const categoryCtx = useContext(CategoryContext)
     const { setCategory, main, isFetching } = categoryCtx
+
+    useLayoutEffect(() => {
+        setCategory((ps) => ({ ...ps, isFetching: true }))
+    }, [])
 
     useEffect(() => {
         ; (async () => {
@@ -45,6 +51,7 @@ const ProductCategory = ({ navigation }) => {
                 {...props}
                 scrollEnabled
                 style={{ backgroundColor: '#de1f26', height: 60 }}
+                labelStyle={{ fontFamily: 'Samim', fontSize: 13}}
                 indicatorStyle={{ backgroundColor: 'white', height: 2 }}
                 pressColor='#dedede'
             />
@@ -52,7 +59,9 @@ const ProductCategory = ({ navigation }) => {
         [routes],
     )
 
-    if (isFetching) return null
+    if (isFetching) return <DotsLoader />
+
+    if (!main) return <EmptyList text={"دسته بندی وجود ندارد!"} />
 
     return (
         <>

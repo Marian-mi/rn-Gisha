@@ -11,6 +11,7 @@ import { BoxStyles, Colors, Flex } from '../../Styles/Index';
 import ProductPageHeader from './Header';
 import RenderHtml from 'react-native-render-html'
 import DotsLoader from '../../Fragments/Loaders/DotsLoader';
+import { AppHelper } from '../../config';
 
 const ProductPage = ({ route }) => {
     const { product, setProducts, isFetching } = useContext(ProductContext);
@@ -43,7 +44,7 @@ const ProductPage = ({ route }) => {
     const renderItem = item => {
         return (
             <PureView key={item.Path} style={{ width: width }}>
-                <Image source={{ uri: "http://192.168.1.104:8182" + item.Path, width: width, height: width }} />
+                <Image source={{ uri: AppHelper.MapToServerPath(item.Path), width: width, height: width }} />
             </PureView>
         );
     };
@@ -51,7 +52,7 @@ const ProductPage = ({ route }) => {
 
     return (
         <ScrollView onScroll={(e) => setScrollY(e.nativeEvent.contentOffset.y)} stickyHeaderIndices={[0]}>
-            <ProductPageHeader title={"عنوان مورد نظر محصول در این قسمت نمایش داده میشود"} scrollY={scrollY} />
+            <ProductPageHeader title={product.Title.Main} scrollY={scrollY} />
             <View style={{ position: "relative", zIndex: 0 }}>
                 <Carousel data={product.ProductImages.BigGallery ?? product.ProductImages} renderer={renderItem} keyExtractor={(item) => item.Path} />
                 <Title title={product.Title.Main} />
@@ -60,7 +61,6 @@ const ProductPage = ({ route }) => {
                     <View style={Styles.Details}>
                         <View style={Styles.Description}>
                             <RenderHtml
-                                style
                                 source={{ html: product.Description }}
                                 contentWidth={300}
                             />
@@ -70,7 +70,7 @@ const ProductPage = ({ route }) => {
 
                         <View style={Styles.AddtoCart}>
                             <Icon name="cart-plus" size={32} color={'white'} />
-                            <Text style={{ marginStart: 20, color: 'white', fontSize: 22 }}>افزودن به سبد خرید</Text>
+                            <Text style={{ marginStart: 20, color: 'white', fontSize: 18, fontFamily: "Samim" }}>افزودن به سبد خرید</Text>
                         </View>
                     </View>
                 </View>
@@ -104,12 +104,12 @@ const Buttons = () => (
     <View style={Flex.Row}>
         <Pressable style={Styles.Button}>
             <Icon name="comment-multiple" size={22} color={Colors.Grey} />
-            <Text style={{ flex: 1, textAlign: 'center', fontWeight: '600' }}>نظرات کاربران</Text>
+            <Text style={Styles.ButtonLabel}>نظرات کاربران</Text>
         </Pressable>
         <View style={{ flex: 1 }} />
         <Pressable style={Styles.Button}>
             <Icon name="clipboard-text-outline" size={26} color={Colors.Grey} />
-            <Text style={{ flex: 1, textAlign: 'center', fontWeight: '600' }}>مشخصات</Text>
+            <Text style={Styles.ButtonLabel}>مشخصات</Text>
         </Pressable>
     </View>
 );
@@ -120,12 +120,20 @@ const Styles = StyleSheet.create({
         backgroundColor: '#fafafa',
         ...BoxStyles.Shadow,
     },
+    ButtonLabel: {
+        fontFamily: "Samim",
+        flex: 1,
+        fontSize: 13,
+        textAlign: 'center',
+        fontWeight: '600'
+    },
     TitleText: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: '600',
         paddingHorizontal: 10,
         paddingTop: 15,
         paddingBottom: 35,
+        fontFamily: "Samim",
     },
     Button: {
         flex: 4,
@@ -142,13 +150,16 @@ const Styles = StyleSheet.create({
     Price: {
         color: Colors.Green,
         textAlign: 'right',
+        fontFamily: "Samim",
         fontWeight: '600',
-        fontSize: 22,
+        fontSize: 20,
     },
     Score: {
         backgroundColor: Colors.Primary,
         paddingVertical: 8,
+        fontFamily: "Samim",
         marginVertical: 20,
+        fontSize: 13,
         color: 'white',
         textAlign: 'center',
     },

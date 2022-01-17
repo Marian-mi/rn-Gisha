@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { View, Text, Image, useWindowDimensions, Pressable, StyleSheet, Animated, Easing } from 'react-native'
 import { Directions, FlatList } from 'react-native-gesture-handler'
-import HomeContext from '../../ContextProviders/HomeContext'
+import AppContext from '../../ContextProviders/AppContext'
 import ProductContext from '../../ContextProviders/ProductContext'
 import MainHeader from '../../Fragments/Headers/MainHeader'
 import Gallery from '../../Fragments/images/Gallery'

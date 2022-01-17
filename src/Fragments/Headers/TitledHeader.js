@@ -60,7 +60,8 @@ export const TitledHeaderStyles = StyleSheet.create({
         flex: 4,
         justifyContent: 'center',
         height: 40,
-        paddingStart: 10
+        paddingStart: 10,
+        fontFamily: "Samim",
     }
 })
 
