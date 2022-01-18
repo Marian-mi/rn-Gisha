@@ -10,7 +10,7 @@ const ProductList = ({ products, title, showMoreButton, showMoreAction }) => {
         return null
 
     return (
-        <View style={{ marginVertical: 30 }}>
+        <View style={{ marginVertical: 15 }}>
             <View style={[Flex.Row, { justifyContent: 'space-between', paddingHorizontal: 15 }]}>
                 <Text style={Styles.Title}>{title}</Text>
                 {showMoreButton

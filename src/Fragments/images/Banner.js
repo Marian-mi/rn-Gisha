@@ -7,7 +7,7 @@ const Banner = ({ name, action }) => {
     const { width } = useWindowDimensions()
 
     return (
-        <Pressable onPress={() => action()} style={{ marginVertical: 30 }}>
+        <Pressable onPress={() => action()}>
               <Image source={{ uri: PICTURE_PATH + name, height: width * (6 / 19), width }} />
         </Pressable>
     )

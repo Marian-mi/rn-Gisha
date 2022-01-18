@@ -1,4 +1,4 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
@@ -13,6 +13,7 @@ import Search from './src/Components/Search/Search';
 import Test from './src/Components/Test/Test';
 import ProductPage from './src/Components/ProductPage/ProductPage';
 import AppContext from './src/ContextProviders/AppContext';
+import Auth from './src/Components/Auth/Auth';
 //#endregion
 
 const Drawer = createDrawerNavigator();
@@ -47,6 +48,7 @@ const ScreenStack = () => {
             <Stack.Screen name="Search" component={Search} options={StackOptions} />
             <Stack.Screen name="ProductPage" component={ProductPage} options={StackOptions} />
             <Stack.Screen name="Test" component={Test} options={StackOptions} />
+            <Stack.Screen name="Auth" component={Auth} options={StackOptions} />
         </Stack.Navigator>
     );
 };
@@ -129,9 +131,11 @@ const CustomDrawerContent = props => {
 };
 
 const DrawerHeader = () => {
-    const { setApp, isAuthenticated } = useContext(AppContext)
+    const { isAuthenticated } = useContext(AppContext)
+    const navigation = useNavigation()
+
     return (
-        <Pressable style={DrawerStyles.HeaderContainer} onPress={() => setApp((ps) => ({ ...ps, isAuthenticated: true }))}>
+        <Pressable style={DrawerStyles.HeaderContainer} onPress={() => navigation.navigate("Auth")}>
             {isAuthenticated ? <View><Text style={[DrawerStyles.Label, { color: 'white'}]}>کاربر گرامی, خوش آمدید</Text></View>
                 : (
                     <>

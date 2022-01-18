@@ -39,3 +39,14 @@ export const Flex = StyleSheet.create({
         alignItems: 'center'
     }
 })
+
+export const Buttons = StyleSheet.create({
+    Primary: {
+        paddingVertical: 8,
+        paddingHorizontal: 20,
+        backgroundColor: "#eee",
+        borderRadius: 4,
+        elevation: 4,
+        ...Flex.Centered
+    }
+})
