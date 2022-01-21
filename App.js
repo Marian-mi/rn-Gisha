@@ -1,6 +1,6 @@
 //#region Core Dependecies
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 //#endregion
 
 
@@ -8,25 +8,66 @@ import React from 'react';
 import NavigationStacks from './Navigation';
 import MainContextProvider from './src/ContextProviders/Index';
 import axios from 'axios'
+import { ReadUser } from './src/Realm/User';
+import AppContext from './src/ContextProviders/AppContext';
+import { UserSchema } from './src/Components/Auth/Auth';
+import reactotron from 'reactotron-react-native';
+import { ApplicationProvider } from '@ui-kitten/components';
+import * as eva from '@eva-design/eva';
 
-if(__DEV__) {
+import { Platform } from 'react-native'
+import { Database, Q } from '@nozbe/watermelondb'
+import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite'
+
+import schema from './model/schema'
+import migrations from './model/migrations'
+import Person, { User } from './model/person'
+
+if (__DEV__) {
     import('./src/reactotronconfig.js').then(() => console.log('Reactotron Configured'))
 }
 
-export const PICTURE_PATH = "http://192.168.1.104:8182/images/FaraShop/dynamic-link/"
+const adapter = new SQLiteAdapter({
+    schema,
+    migrations,
+    jsi: false,
+    onSetUpError: error => {
+    },
+})
 
- 
+export const database = new Database({
+    adapter,
+    modelClasses: [
+        Person
+    ],
+})
+
 const App = () => {
+    const { setApp, isAuthenticated } = useContext(AppContext)
+    useEffect(() => {
+        ; (async () => {
+            if (!isAuthenticated) {
+                const user = await User.authCurrentUser()
+
+                if (user !== null) {
+                    setApp((ps) => ({
+                        ...ps,
+                        username: user.username,
+                        isAuthenticated: true,
+                    }))
+                }
+            }
+        })();
+    }, [])
+
     return (
-        <MainContextProvider>
-            <NavigationStacks />
-        </MainContextProvider>
+        <NavigationStacks />
     );
 };
 
 export const Axios = axios.create({
     baseURL: "http://192.168.1.104:8182/api/shop",
-    headers: { "Content-Type": "application/json; charset=utf-8"}
+    headers: { "Content-Type": "application/json; charset=utf-8" }
 })
 
 export default App;

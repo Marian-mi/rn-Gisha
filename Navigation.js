@@ -1,8 +1,7 @@
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
+import { View, StyleSheet, Pressable, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { BoxStyles, Colors, Flex } from './src/Styles/Index';
 
@@ -14,10 +13,14 @@ import Test from './src/Components/Test/Test';
 import ProductPage from './src/Components/ProductPage/ProductPage';
 import AppContext from './src/ContextProviders/AppContext';
 import Auth from './src/Components/Auth/Auth';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import { User } from './model/person';
 //#endregion
 
-const Drawer = createDrawerNavigator();
+
+
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 const NavigationStacks = () => {
     return (
@@ -32,6 +35,7 @@ const NavigationStacks = () => {
                     }}
                 />
             </Drawer.Navigator>
+
         </NavigationContainer>
     );
 };
@@ -54,7 +58,7 @@ const ScreenStack = () => {
 };
 
 const CustomDrawerContent = props => {
-    const { content, isFetching, isAuthenticated, setApp } = useContext(AppContext)
+    const { content, isFetching, isAuthenticated , setApp } = useContext(AppContext)
     return (
         <DrawerContentScrollView {...props}>
             <View>
@@ -122,7 +126,7 @@ const CustomDrawerContent = props => {
                         style={{ backgroundColor: "rgba(200,0,0,0.1)"}}
                         label={() => <Text style={DrawerStyles.Label}>خروج</Text>}
                         icon={() => <Icon name="logout" size={26} color="#5f5f5f" />}
-                        onPress={() => setApp(ps => ({...ps, isAuthenticated: false}))}
+                        onPress={() => LogOut(setApp)}
                     />
                 )}
             </View>
@@ -130,13 +134,18 @@ const CustomDrawerContent = props => {
     );
 };
 
-const DrawerHeader = () => {
-    const { isAuthenticated } = useContext(AppContext)
-    const navigation = useNavigation()
+const LogOut = (setApp) => {
+    User.currentUser.HandleAuth(false)
+    User.currentUser = null
+    setApp(ps => ({...ps, isAuthenticated: false}))
+}
 
+const DrawerHeader = () => {
+    const { isAuthenticated, username } = useContext(AppContext)
+    const navigation = useNavigation()
     return (
         <Pressable style={DrawerStyles.HeaderContainer} onPress={() => navigation.navigate("Auth")}>
-            {isAuthenticated ? <View><Text style={[DrawerStyles.Label, { color: 'white'}]}>کاربر گرامی, خوش آمدید</Text></View>
+            {isAuthenticated ? <View><Text style={[DrawerStyles.Label, { color: 'white'}]}>{username}</Text></View>
                 : (
                     <>
                         <Icon name="account" color="white" size={26} style={{ marginEnd: 15 }} />

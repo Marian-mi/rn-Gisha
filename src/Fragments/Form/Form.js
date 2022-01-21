@@ -3,7 +3,7 @@ import { View, Text, Pressable } from 'react-native'
 import { Buttons, Colors, Flex } from '../../Styles/Index'
 import InputText from '../Input/TextInput'
 
-const Form = ({ config, submitButtonText }) => {
+const Form = ({ config, submitButtonText, onSubmit }) => {
     const initialState = React.useRef(() => {
         return config.reduce((pv, cv) => {
             pv[cv.name] = {
@@ -32,13 +32,13 @@ const Form = ({ config, submitButtonText }) => {
     }
 
     const submitForm = () => {
-        let isValid = true;
+        let valid = true;
 
         config.forEach(({ name, required, validations, label }) => {
             const data = formState[name].value
 
             if (required && data?.length === 0) {
-                isValid = false
+                valid = false
                 setErrorMessages(ps => ({...ps, ...ps[name] = `وارد کردن ${label} الزامی است.`}))
 
                 return 
@@ -49,26 +49,29 @@ const Form = ({ config, submitButtonText }) => {
 
                 if (!isValid) {
                     setErrorMessages(ps => ({...ps, ...ps[name] = errorMessage}))
-
+                    valid = false
                     return
                 }
                 else if (errorMessages[name]?.length > 0) {
-                    console.log('valid')
                     setErrorMessages(ps => ({...ps, ...ps[name] = ""}))
 
                 }
             }
         })
 
-        if (!isValid) return
+        if (!valid) return
+
+        onSubmit(Object.entries(formState).reduce((pv, [key, val]) => {
+            pv[key.trim()] = val.value
+            return pv
+        }, {}))
     }
 
     const BuildForm = () => {
-        const { row: rowsCount, justify } = config.sort((a, b) => a.row < b.row)[0]
+        const { row: rowsCount, justify, name } = config.sort((a, b) => b.row - a.row)[0]
 
         let elements = []
 
-        console.log('object1')
         for (let i = 0; i < rowsCount; i++) {
             let row = []
             const rowElements = config.filter(x => x.row === i + 1).sort((a, b) => a.displayOrder > b.displayOrder)
@@ -84,16 +87,16 @@ const Form = ({ config, submitButtonText }) => {
             if (elemetsWidth < 12) {
                 const emptySize = 12 - elemetsWidth
                 if (justify === 'center' && emptySize % 2 === 0) {
-                    row.unshift(<View style={{ flex: emptySize / 2 }} />)
-                    row.push(<View style={{ flex: emptySize / 2 }} />)
+                    row.unshift(<View key={121} style={{ flex: emptySize / 2 }} />)
+                    row.push(<View key={131} style={{ flex: emptySize / 2 }} />)
                 }
                 else {
-                    row.push(<View style={{ flex: 12 - elemetsWidth }} />)
+                    row.push(<View key={121} style={{ flex: 12 - elemetsWidth }} />)
                 }
             }
 
             elements.push(
-                <View style={[Flex.Row, { padding: 15 }]}>
+                <View style={[Flex.Row, { padding: 15 }]} key={i}>
                     {row}
                 </View>
             )
@@ -126,6 +129,7 @@ const InputFactory = ({ type, name, width, setState, label, error }) => {
                     wrapperStyles={{ flex: width }}
                     setInput={(data) => setState({ name, data })}
                     validate={error[name] ?? false}
+                    key={label}
                 />)
     }
 }
@@ -135,7 +139,6 @@ const InputFactory = ({ type, name, width, setState, label, error }) => {
 const Validator = (types, data, additionalData) => {
     let isValid = true
     let errorMessage = ""
-    console.log(types)
     types.forEach(type => {
         if (!isValid)
             return
@@ -152,7 +155,6 @@ const Validator = (types, data, additionalData) => {
                 errorMessage = ErrorMessages[ValidationTypes.NationalCode]
                 break
             case ValidationTypes.Length():
-                console.log('hola')
                 isValid = data.length >= val
                 errorMessage = ErrorMessages.Length(val)
                 break

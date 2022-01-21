@@ -7,8 +7,9 @@ export const App = {
     banner: [],
     gallery: [],
     content: [],
-    setApp: () => {},
+    setApp: () => { },
     isFetching: true,
+    username: null,
     isAuthenticated: false,
     domain: "http://192.168.1.104:8182"
 }
@@ -21,7 +22,7 @@ export const AppProvider = ({ children }) => {
     const [app, setApp] = useState(App)
 
     return (
-        <AppContext.Provider value={{ ...app, setApp}}>
+        <AppContext.Provider value={{ ...app, setApp }}>
             {children}
         </AppContext.Provider>
     )

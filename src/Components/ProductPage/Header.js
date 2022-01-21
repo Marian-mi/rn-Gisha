@@ -21,13 +21,14 @@ const ProductPageHeader = ({ title, scrollY }) => {
                     <Icon name='arrow-right' size={24} color={iconsColor} style={{ flex: 1, textAlignVertical: 'center' }} />
                 </Pressable>
                 <Pressable style={TitledHeaderStyles.Title}>
-                    <Text style={[TextStyles.Title1]}>{title}</Text>
+                    <Text numberOfLines={1} style={[TextStyles.Title1]}>{title}</Text>
                 </Pressable>
             </View>
 
+            <View style={{ flex: 1 }} />
 
             <View style={{ ...TitledHeaderStyles.Wrappers, flex: 2, }}>
-                <Icon name='cart' size={24}  style={{ flex: 1, ...TitledHeaderStyles.Icons, color: iconsColor }} />
+                <Icon name='cart' size={24} style={{ flex: 1, ...TitledHeaderStyles.Icons, color: iconsColor }} />
                 <Icon name='dots-vertical' size={24} style={{ flex: 1, ...TitledHeaderStyles.Icons, color: iconsColor }} />
             </View>
         </View>

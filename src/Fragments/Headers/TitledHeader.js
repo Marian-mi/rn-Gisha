@@ -18,7 +18,7 @@ const TitledHeader = ({ title }) => {
                     <Icon name='arrow-right' size={24} color={'white'} style={{ flex: 1, textAlignVertical: 'center' }} />
                 </Pressable>
                 <Pressable style={TitledHeaderStyles.Title}>
-                    <Text style={ TextStyles.Title1 }>{title}</Text>
+                    <Text numberOfLines={1} style={ TextStyles.Title1 }>{title}</Text>
                 </Pressable>
             </View>
 

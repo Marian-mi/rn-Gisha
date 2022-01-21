@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image, Pressable, useWindowDimensions } from 'react-native'
 import { PICTURE_PATH } from '../../../App'
+import { DynamicLink } from '../../config'
 
 
 const Banner = ({ name, action }) => {
@@ -8,7 +9,7 @@ const Banner = ({ name, action }) => {
 
     return (
         <Pressable onPress={() => action()}>
-              <Image source={{ uri: PICTURE_PATH + name, height: width * (6 / 19), width }} />
+              <Image source={{ uri: DynamicLink.PICTURE_PATH + name, height: width * (6 / 19), width }} />
         </Pressable>
     )
 }
