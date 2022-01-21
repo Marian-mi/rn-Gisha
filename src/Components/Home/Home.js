@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid/non-secure'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { View, Text, Pressable, Image, useWindowDimensions } from 'react-native'
 import { Axios } from '../../../App'
 import Carousel from '../../Fragments/Carousel/Carousel'
@@ -12,31 +12,16 @@ import { ScrollView } from 'react-native-gesture-handler'
 import ProductList from '../../Fragments/ProductList/ProductList'
 import DotsLoader from '../../Fragments/Loaders/DotsLoader'
 import AppContext from '../../ContextProviders/AppContext'
+import { HomeApi } from './Api'
 
 const Home = ({ navigation }) => {
     const { slider, setApp, text, isFetching, banner, gallery, content } = useContext(AppContext)
     const { width } = useWindowDimensions()
 
+    const Api = useRef(new HomeApi(setApp)).current
+
     useEffect(() => {
-        ; (async () => {
-            try {
-                const response = await Axios.post("/app/getall", JSON.stringify({ TagTake: 20, DynamicContentTake: 20 }))
-                const data = await response.data;
-
-                setApp((ps) => ({
-                    ...ps,
-                    slider: data.DynamicLinks.Sliders,
-                    text: data.DynamicLinks.Texts,
-                    banner: data.DynamicLinks.Banners,
-                    gallery: data.DynamicLinks.Galleries,
-                    content: data.DynamicContents,
-                    isFetching: false
-                }))
-            }
-            catch (err) {
-            }
-
-        })();
+        Api.loadPageContent()
     }, [])
 
     const renderItem = item => {

@@ -5,6 +5,7 @@ import { Axios } from '../../../App';
 import { AppHelper } from '../../config';
 import EmptyList from '../../Fragments/Informatic/EmtyList';
 import DotsLoader from '../../Fragments/Loaders/DotsLoader';
+import { ProductCategoryApi } from './Api';
 
 
 const SubCategory = ({ mainID }) => {
@@ -16,12 +17,10 @@ const SubCategory = ({ mainID }) => {
     useEffect(() => {
         ; (async () => {
             try {
-                const response = await Axios.post("/category/getby", { ParentID: mainID })
-                const data = await response.data
-
-                setItems(data)
+                setItems(await ProductCategoryApi.getSubCategories(mainID))
             }
             catch (err) {
+                console.log(err);
             }
             finally {
                 setIsFetching(false)

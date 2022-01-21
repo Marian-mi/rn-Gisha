@@ -23,7 +23,6 @@ const Auth = () => {
             const user = (await User.getBy(data.Username))[0] ?? null
 
             if (user) {
-                console.log('found');
                 user.HandleAuth(true)
                 User.currentUser = user
                 setApp(ps => ({ ...ps, isAuthenticated: true, username: user.username }))

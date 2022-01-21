@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { View, Text } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import { Axios } from '../../../App'
@@ -11,6 +11,7 @@ import DotsLoader from '../../Fragments/Loaders/DotsLoader'
 import ProductBox from '../../Fragments/Product/ProductBox'
 import SearchControls from '../../Fragments/Search/Contorls'
 import Sorts from '../../Fragments/Search/SortsModal'
+import { SearchApi } from './Api'
 
 
 const Search = ({ navigation, route }) => {
@@ -22,23 +23,14 @@ const Search = ({ navigation, route }) => {
     const { products } = productCtx
     const { productListColumns, results, setSearch, isFetching } = searchCtx
 
+    const Api = useRef(new SearchApi(setSearch)).current
+
     useLayoutEffect(() => {
         setSearch((ps) => ({ ...ps, isFetching: true }))
     }, [])
 
     useEffect(() => {
-        ; (async () => {
-            try {
-                const response = await Axios.post("/af/find", JSON.stringify({ ProductGroupId: LinkID, Take: 30 }))
-                const data = await response.data
-
-                setSearch({ ...searchCtx, results: data.Products, isFetching: false })
-            }
-            catch (err) {
-                setSearch((ps) => ({...ps, isFetching: false}))
-                console.log(err)
-            }
-        })();
+        Api.find({ ProductGroupId: LinkID })
     }, [])
 
     if (isFetching) return <DotsLoader />

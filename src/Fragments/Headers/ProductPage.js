@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { TitledHeaderStyles } from '../../Fragments/Headers/TitledHeader'
+import { TitledHeaderStyles } from './TitledHeader'
 import { Colors, Flex, TextStyles } from '../../Styles/Index'
 
 

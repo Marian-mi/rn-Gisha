@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { View, Text, useWindowDimensions, Pressable, StyleSheet } from 'react-native'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
 import { Axios } from '../../../App'
@@ -6,6 +6,7 @@ import CategoryContext from '../../ContextProviders/CategoryContext'
 import TitledHeader from '../../Fragments/Headers/TitledHeader'
 import EmptyList from '../../Fragments/Informatic/EmtyList'
 import DotsLoader from '../../Fragments/Loaders/DotsLoader'
+import { ProductCategoryApi } from './Api'
 import SubCategory from './SubCategory'
 
 const ProductCategory = ({ navigation }) => {
@@ -14,24 +15,19 @@ const ProductCategory = ({ navigation }) => {
     const categoryCtx = useContext(CategoryContext)
     const { setCategory, main, isFetching } = categoryCtx
 
+    const Api = useRef(new ProductCategoryApi(setCategory)).current
+
     useLayoutEffect(() => {
         setCategory((ps) => ({ ...ps, isFetching: true }))
     }, [])
 
     useEffect(() => {
         ; (async () => {
-            try {
-                const response = await Axios.post("/category/getby", { SelectType: 0 })
-                const data = await response.data
-
-                setCategory((ps) => ({ ...ps, main: data, isFetching: false }))
-                setRoutes(data.map(({ Title, ID }) => (
-                    { title: Title, key: Title }
-                )))
-            }
-            catch (err) {
-
-            }
+            const data = await Api.loadMainCategories()
+            
+            setRoutes(data.map(({ Title, ID }) => (
+                { title: Title, key: Title }
+            )))
         })();
     }, [])
 

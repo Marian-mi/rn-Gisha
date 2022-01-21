@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { View, Text, Image, useWindowDimensions, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -8,10 +8,11 @@ import ProductContext from '../../ContextProviders/ProductContext';
 import Carousel from '../../Fragments/Carousel/Carousel';
 import ProductList from '../../Fragments/ProductList/ProductList';
 import { BoxStyles, Colors, Flex } from '../../Styles/Index';
-import ProductPageHeader from './Header';
+import ProductPageHeader from '../../Fragments/Headers/ProductPage';
 import RenderHtml from 'react-native-render-html'
 import DotsLoader from '../../Fragments/Loaders/DotsLoader';
 import { AppHelper } from '../../config';
+import { ProductPageApi } from './Api';
 
 const ProductPage = ({ route }) => {
     const { product, setProducts, isFetching } = useContext(ProductContext);
@@ -21,22 +22,14 @@ const ProductPage = ({ route }) => {
     const { width } = useWindowDimensions();
     const [scrollY, setScrollY] = useState(0)
 
+    const Api = useRef(new ProductPageApi(setProducts)).current
+
     useLayoutEffect(() => {
         setProducts((ps) => ({ ...ps, isFetching: true }))
     }, [])
 
     useEffect(() => {
-        ; (async () => {
-            try {
-                const response = await Axios.post("/product/getdetails", { ProductID: ID })
-                const data = await response.data
-
-                setProducts({ product: data, isFetching: false })
-            }
-            catch (err) {
-                console.log(err)
-            }
-        })();
+        Api.loadProduct(ID)
     }, [])
 
     if (isFetching) return <DotsLoader /> 
