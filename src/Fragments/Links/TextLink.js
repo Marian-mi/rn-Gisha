@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { BoxStyles, Colors } from '../../Styles/Index'
+import { Styles } from './Styles'
 
 
 const TextLinkView = ({ data }) => {
@@ -32,19 +33,3 @@ export const TextLink = ({ action, title }) => {
 }
 
 export default TextLinkView
-
-const Styles = StyleSheet.create({
-    Link: {
-        backgroundColor: Colors.Primary,
-        color: "white",
-        borderRadius: 20,
-        marginHorizontal: 5,
-        padding: 6,
-        paddingHorizontal: 22,
-        fontSize: 13,
-        ...BoxStyles.Shadow,
-        fontFamily: "Samim",
-        textAlign: 'center',
-        textAlignVertical: 'center'
-    }
-})

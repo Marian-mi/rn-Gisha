@@ -3,15 +3,17 @@ import { field, text, writer } from '@nozbe/watermelondb/decorators'
 import { Q } from '@nozbe/watermelondb'
 import { database } from '../App'
 
-export default class Person extends Model {
-  static table = 'person'
+export default class AppUser extends Model {
+  static table = 'user'
 
   @text('username') username
-  @field('is_athenticated') isAuthenticated
+  @text('user_id') userID
+  @text('display_name') displayName
+  @text('token') token
 
-  @writer async HandleAuth(state) {
+  @writer async setToken(token) {
     await this.update(person => {
-      person.isAuthenticated = state
+      person.token = token
     })
   }
 }
@@ -20,18 +22,20 @@ export default class Person extends Model {
 export class User {
   static currentUser = null
 
-  static async getBy(username) {
-    return await database.get('person').query(
-      Q.where('username', username)
+  static async getBy(userID) {
+    return await database.get('user').query(
+      Q.where('user_id', userID)
     ).fetch()
   }
 
-  static async createUser(username) {
+  static async createUser({ username, displayName, token, userID }) {
     let newUser = null
     await database.write(async () => {
-      newUser = await database.get('person').create(person => {
+      newUser = await database.get('user').create(person => {
         person.username = username
-        person.isAuthenticated = true
+        person.userID = userID
+        person.token = token
+        person.displayName = displayName
       })
     })
 
@@ -40,16 +44,15 @@ export class User {
   }
 
   static async authCurrentUser() {
-    const users = await database.get("person").query().fetch()
+    const users = await database.get("user").query().fetch()
 
-    let result = null;
-    users.forEach(user => {
-      if (user.isAuthenticated === true) {
-        result = user
-      }
-    })
+    const latestUser = users[users.length - 1]
 
-    this.currentUser = result
-    return result ? { username: result.username } : null
+    if (latestUser && latestUser?.token?.length > 0) {
+      this.currentUser = latestUser
+      return { username: latestUser.username, result: true }
+    }
+
+    return { result: false }
   }
 }

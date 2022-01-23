@@ -135,7 +135,7 @@ const CustomDrawerContent = props => {
 };
 
 const LogOut = (setApp) => {
-    User.currentUser.HandleAuth(false)
+    User.currentUser.setToken(null)
     User.currentUser = null
     setApp(ps => ({...ps, isAuthenticated: false}))
 }

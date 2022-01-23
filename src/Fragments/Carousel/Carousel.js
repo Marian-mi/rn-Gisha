@@ -3,6 +3,7 @@ import { View, Text, Image, useWindowDimensions, Pressable, StyleSheet } from 'r
 import { Directions, FlatList } from 'react-native-gesture-handler'
 import ProductContext from '../../ContextProviders/ProductContext'
 import MainHeader from '../../Fragments/Headers/MainHeader'
+import { Styles } from './Styles'
 
 
 const Carousel = ({ autoplay, data, renderer, scrollDisabled, keyExtractor }) => {
@@ -107,28 +108,7 @@ const Indicator = ({ count, current }) => {
     )
 }
 
-const Styles = StyleSheet.create({
-    IndicatorWrapper: {
-        width: '100%',
-        position: 'absolute',
-        display: "flex",
-        flexDirection: 'row',
-        justifyContent: 'center',
-        height: 10,
-        bottom: 10,
-        zIndex: 1,
-    },
-    Indicator: {
-        marginHorizontal: 5,
-        width: 10,
-        borderRadius: 50,
-        borderColor: 'white',
-        borderWidth: 2,
-    },
-    IndicatorCurrent: {
-        backgroundColor: 'white'
-    }
-})
+
 
 
 export default Carousel

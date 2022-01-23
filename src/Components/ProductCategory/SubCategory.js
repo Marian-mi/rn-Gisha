@@ -6,6 +6,7 @@ import { AppHelper } from '../../config';
 import EmptyList from '../../Fragments/Informatic/EmtyList';
 import DotsLoader from '../../Fragments/Loaders/DotsLoader';
 import { ProductCategoryApi } from './Api';
+import { SubCategoryStyles } from './Styles';
 
 
 const SubCategory = ({ mainID }) => {
@@ -58,23 +59,6 @@ const SubCategoryBox = ({ Title, ImageUrl }) => (
 )
 
 
-const SubCategoryStyles = StyleSheet.create({
-    Contianer: {
-    },
-    Box: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        flex: 1,
-        paddingVertical: 20,
-        paddingHorizontal: 15,
-        borderBottomColor: '#eeeeee',
-        borderBottomWidth: 2,
-    },
-    Title: {
-        textAlign: 'left',
-        fontFamily: "Samim",
-        fontSize: 13, 
-    }
-})
+
 
 export default SubCategory

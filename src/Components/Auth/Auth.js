@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import reactotron from 'reactotron-react-native'
 import { database } from '../../../App'
@@ -12,30 +12,20 @@ import { Q } from '@nozbe/watermelondb'
 import { User } from '../../../model/person'
 import AppContext from '../../ContextProviders/AppContext'
 import { useNavigation } from '@react-navigation/native'
+import { AuthApi } from './Api'
+import { Styles } from './Styles'
 
 const Auth = () => {
     const [isFetching, setIsFetching] = useState(false)
     const { isAuthenticated, setApp } = useContext(AppContext)
     const navigation = useNavigation()
 
-    const login = async (data) => {
-        try {
-            const user = (await User.getBy(data.Username))[0] ?? null
+    const Api = useRef(new AuthApi(setApp)).current
 
-            if (user) {
-                user.HandleAuth(true)
-                User.currentUser = user
-                setApp(ps => ({ ...ps, isAuthenticated: true, username: user.username }))
-            }
-            else {
-                const newUser = await User.createUser(data.Username)
-                if (newUser)
-                    setApp(ps => ({ ...ps, isAuthenticated: true, username: newUser.username }))
-            }
-        }
-        catch (err) {
-            console.log(err);
-        }
+    const login = async (data) => {
+        setIsFetching(true)
+        await Api.authUser({ Username: data.Username, Password: data.Password})
+        setIsFetching(false)
     }
 
     useEffect(() => {
@@ -59,22 +49,6 @@ const Auth = () => {
         </View>
     )
 }
-
-const Styles = StyleSheet.create({
-    Wrapper: {
-        paddingVertical: 30,
-        marginHorizontal: 25,
-        marginTop: 50,
-        borderRadius: 8,
-        backgroundColor: "white",
-        elevation: 8,
-    },
-    Title: {
-        marginBottom: 15,
-        textAlign: 'center',
-        fontFamily: "Samim"
-    }
-})
 
 const formFields = [
     {

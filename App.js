@@ -21,7 +21,7 @@ import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite'
 
 import schema from './model/schema'
 import migrations from './model/migrations'
-import Person, { User } from './model/person'
+import AppUser, { User } from './model/person';
 
 if (__DEV__) {
     import('./src/reactotronconfig.js').then(() => console.log('Reactotron Configured'))
@@ -38,7 +38,7 @@ const adapter = new SQLiteAdapter({
 export const database = new Database({
     adapter,
     modelClasses: [
-        Person
+        AppUser
     ],
 })
 
@@ -47,12 +47,12 @@ const App = () => {
     useEffect(() => {
         ; (async () => {
             if (!isAuthenticated) {
-                const user = await User.authCurrentUser()
+                const { result, username } = await User.authCurrentUser()
 
-                if (user !== null) {
+                if (result) {
                     setApp((ps) => ({
                         ...ps,
-                        username: user.username,
+                        username: username,
                         isAuthenticated: true,
                     }))
                 }

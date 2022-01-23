@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { View, Text, TextInput, StyleSheet, Animated } from 'react-native'
 import { Colors, Flex } from '../../Styles/Index'
+import { TextInputStyles } from './Styles'
 
 
 const InputText = ({ setInput, label, wrapperStyles, validate }) => {
@@ -33,42 +34,23 @@ const InputText = ({ setInput, label, wrapperStyles, validate }) => {
     const inputBorderColor = validate?.length > 0 ? "rgba(200,0,0,0.5)" : focused ? Colors.Grey : "rgba(0,0,0,0.2)"
 
     return (
-        <View style={[Styles.Wrapper, wrapperStyles]}>
+        <View style={[TextInputStyles.Wrapper, wrapperStyles]}>
             <Animated.Text
-                style={[Styles.Label, { transform: [{translateY: animatedVal.interpolate({ inputRange: [0, 1], outputRange: [10, -10] })}] }]}
+                style={[TextInputStyles.Label, { transform: [{translateY: animatedVal.interpolate({ inputRange: [0, 1], outputRange: [10, -10] })}] }]}
             >
                 {label}
             </Animated.Text>
             <TextInput
-                style={[Styles.Input, { borderBottomColor: inputBorderColor}]}
+                style={[TextInputStyles.Input, { borderBottomColor: inputBorderColor}]}
                 onChangeText={(text) => { setInput(text); setEmpty(text.length === 0)}}
                 onFocus={() => changeFocus(true)}
                 onBlur={() => changeFocus(false)}
                 selectionColor={"#aaa"}
             />
-            {validate?.length > 0 && (<Text style={Styles.Error}>{validate}</Text>)}
+            {validate?.length > 0 && (<Text style={TextInputStyles.Error}>{validate}</Text>)}
         </View>
     )
 }
 
-const Styles = StyleSheet.create({
-    Wrapper: {
-        marginVertical: 10
-    },
-    Input: {
-        borderBottomColor: Colors.Grey,
-        borderBottomWidth: 2,
-        textAlign: "right",
-        padding: 5
-    },
-    Label: {
-        position: "absolute",
-    },
-    Error: { 
-        color: "rgba(200,0,0,0.5)",
-        bottom: -20,
-        position: 'absolute',
-    }
-})
 
 export default InputText
